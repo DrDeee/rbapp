@@ -53,7 +53,7 @@
                       <li>
                         <button
                           class="p-2 w-full text-center rounded-b-none"
-                          @click="deli.makeEx()"
+                          @click="deli.status = 'EX'"
                         >
                           Zum Ex-Deli machen
                         </button>
@@ -61,7 +61,7 @@
                       <li>
                         <button
                           class="p-2 w-full text-center rounded-t-none"
-                          @click="deli.remove()"
+                          @click="localGroup.removeRep(deli)"
                         >
                           Kontaktdaten löschen
                         </button>
@@ -160,6 +160,99 @@
                 />
               </div>
             </form>
+            <h3 class="text-xl">Ex-Delis:</h3>
+            <ul>
+              <li
+                v-for="deli of localGroup.exRepresentatives"
+                :key="deli.name"
+                class="flex flex-col justify-around text-lg p-1 deli"
+              >
+                <div class="flex justify-between p-1 mb-2">
+                  {{ deli.name }}
+                  <!--
+                  If the menu is open somehow the event handler on the main
+                  div triggers also and the menu isn't hidden :(
+                  @click.stop prevents this somehow
+                -->
+                  <details
+                    :open="openMenu === deli.id"
+                    @toggle="
+                      openMenu = $event.target.attributes['open']
+                        ? deli.id
+                        : null
+                    "
+                    @click.stop
+                  >
+                    <summary class="text-primary">
+                      <font-awesome-icon icon="ellipsis-h" />
+                    </summary>
+                    <ul
+                      class="absolute left-auto bg-primary rounded-lg menu-right text-lg"
+                      @click="openMenu = null"
+                    >
+                      <li>
+                        <button
+                          class="p-2 w-full text-center rounded-b-none"
+                          @click="deli.status = 'CURRENT'"
+                        >
+                          Zum Deli machen
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          class="p-2 w-full text-center rounded-t-none"
+                          @click="deli.remove()"
+                        >
+                          Kontaktdaten löschen
+                        </button>
+                      </li>
+                    </ul>
+                  </details>
+                </div>
+                <div class="flex justify-between">
+                  <button
+                    v-if="!deli.editing"
+                    class="mx-1 w-8 h-8 flex-none"
+                    @click="deli.editing = !deli.editing"
+                  >
+                    <font-awesome-icon icon="edit" />
+                  </button>
+                  <button
+                    v-else
+                    class="mx-1 w-8 h-8 flex justify-center items-center text-gray-200 flex-none"
+                    @click="deli.cancel()"
+                  >
+                    <font-awesome-icon icon="times" />
+                  </button>
+                  <a
+                    v-if="!deli.editing"
+                    class="text-center text-primary flex items-center"
+                    :href="'tel:' + deli.phone"
+                  >
+                    {{ deli.formattedPhone }}
+                  </a>
+                  <input
+                    v-else
+                    v-model="deli.phone"
+                    class="text-primary min-w-0 px-1 rounded-lg border border-solid border-primary"
+                    type="phone"
+                  />
+                  <div v-if="!deli.editing" class="flex">
+                    <a :href="deli.waMe" class="mx-1 button w-8 h-8">
+                      <font-awesome-icon :icon="['fab', 'whatsapp']" />
+                    </a>
+                    <button class="w-8 h-8" @click="deli.copyNumber()">
+                      <font-awesome-icon icon="copy" />
+                    </button>
+                  </div>
+                  <div v-else class="flex-none">
+                    <button class="mx-1 w-8 h-8" @click="deli.save()">
+                      <font-awesome-icon icon="save" />
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </details>
       </li>
@@ -172,7 +265,7 @@
     <h1 class="text-center m-5">
       Hi Aktivist, herzlich willkommen zur Regio App
     </h1>
-    <button class="p-1 max-w-sm m-5" @click="$auth.loginWith('cloud')">
+    <button class="p-1 px-2 max-w-sm m-5" @click="$auth.loginWith('cloud')">
       Mit Cloud-Account einloggen
     </button>
   </div>
@@ -182,16 +275,31 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 class LocalGroup {
-  representatives: Representative[]
+  allRepresentatives: Representative[]
   name: string
+  id: string
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
 
   constructor(data: any) {
-    this.representatives = data.representatives.map(
+    this.allRepresentatives = data.representatives.map(
       (representative: any) => new Representative(representative)
     )
     this.name = data.name
+    this.id = data.id
+  }
+
+  get representatives() {
+    return this.allRepresentatives.filter((rep) => rep.status === 'CURRENT')
+  }
+
+  get exRepresentatives() {
+    return this.allRepresentatives.filter((rep) => rep.status === 'EX')
+  }
+
+  removeRep(rep: Representative) {
+    const index = this.allRepresentatives.findIndex((r) => r === rep)
+    this.allRepresentatives.splice(index)
   }
 
   cancelNewDeli() {
@@ -202,10 +310,12 @@ class LocalGroup {
 
   async saveNewDeli(axios: any) {
     this.newDeliMenu = 'LOADING'
-    this.representatives.push(
+    this.allRepresentatives.push(
       new Representative(
-        await axios.post('http://localhost:8000/representatives', this.newDeli)
-          .data
+        await axios.$post(
+          `localGroups/${this.id}/representatives`,
+          this.newDeli
+        )
       )
     )
     this.cancelNewDeli()
@@ -221,13 +331,11 @@ class Representative {
 
   id: string
 
-  status: 'CURRENT' | 'EX'
-
   constructor(data: any) {
     this.name = data.name
     this.phone = data.phone
     this.originalPhone = this.phone
-    this.status = 'CURRENT'
+    this._status = data.status
     this.id = data.id
   }
 
@@ -258,9 +366,14 @@ class Representative {
     window.navigator.clipboard.writeText(this.formattedPhone)
   }
 
-  makeEx() {
-    this.status = 'EX'
+  _status: 'CURRENT' | 'EX'
+  set status(value: 'CURRENT' | 'EX') {
+    this._status = value
     this.menuOpen = false
+  }
+
+  get status() {
+    return this._status
   }
 
   get phoneLink() {
@@ -284,23 +397,16 @@ export default class IndexView extends Vue {
   $axios: any
 
   created() {
-    this.$axios
-      .get('http://localhost:8000/localGroups')
-      .then((response: any) => {
-        this.localGroups = response.data.map(
-          (localGroup: any) => new LocalGroup(localGroup)
-        )
-      })
+    this.$axios.get('localGroups').then((response: any) => {
+      console.log(response)
+      this.localGroups = response.data.map(
+        (localGroup: any) => new LocalGroup(localGroup)
+      )
+    })
   }
 }
 </script>
 <style>
-button,
-.button,
-input[type='submit'] {
-  @apply rounded-lg flex justify-center items-center bg-primary text-gray-200
-      border border-primary;
-}
 button:hover,
 .button:hover,
 input[type='submit']:hover,
@@ -312,6 +418,17 @@ input[disabled],
 button[disabled] {
   @apply pointer-events-none;
 }
+button,
+.button,
+input[type='submit'],
+button:active,
+.button:active,
+input[type='submit']:active {
+  @apply rounded-full flex justify-center items-center bg-primary text-gray-200
+      border border-primary;
+  text-shadow: ;
+}
+
 details > summary {
   list-style: none;
 }
