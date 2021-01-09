@@ -1,5 +1,5 @@
 <template>
-  <div @click="openMenu = null">
+  <div v-if="this.$auth.loggedIn" @click="openMenu = null">
     <h1 class="text-3xl text-center font-bold my-1">Meine Ortsgruppen</h1>
     <ul class="flex flex-col m-2 shadow-2xl">
       <li
@@ -114,22 +114,24 @@
               </li>
             </ul>
             <button
-              v-if="!localGroup.openNewDeli"
+              v-if="localGroup.newDeliMenu == 'CLOSED'"
               class="m-3 text-xl inline-block"
-              @click="localGroup.openNewDeli = true"
+              @click="localGroup.newDeliMenu = 'OPEN'"
             >
               Neuer Deli
             </button>
             <form
               v-else
               class="flex flex-col px-1"
-              @submit="localGroup.saveNewDeli($axios)"
+              :class="{ 'text-gray-600': localGroup.newDeliMenu === 'LOADING' }"
+              @submit.prevent="localGroup.saveNewDeli($axios)"
             >
               <div class="flex justify-between">
                 <label class="my-1"> Name: </label>
                 <input
                   v-model="localGroup.newDeli.name"
                   class="my-1"
+                  :disabled="localGroup.newDeliMenu === 'LOADING'"
                   required
                 />
               </div>
@@ -139,19 +141,40 @@
                   v-model="localGroup.newDeli.phone"
                   class="my-1"
                   type="tel"
+                  :disabled="localGroup.newDeliMenu === 'LOADING'"
                 />
               </div>
               <div class="flex justify-around mt-1">
-                <button class="px-1" @click="localGroup.cancelNewDeli()">
+                <button
+                  class="px-1"
+                  :disabled="localGroup.newDeliMenu == 'LOADING'"
+                  @click="localGroup.cancelNewDeli()"
+                >
                   Abbrechen
                 </button>
-                <input type="submit" value="Speichern" class="px-1" />
+                <input
+                  type="submit"
+                  value="Speichern"
+                  class="px-1"
+                  :disabled="localGroup.newDeliMenu == 'LOADING'"
+                />
               </div>
             </form>
           </div>
         </details>
       </li>
     </ul>
+  </div>
+  <div
+    v-else
+    class="text-xl flex flex-col justify-center h-screen items-center"
+  >
+    <h1 class="text-center m-5">
+      Hi Aktivist, herzlich willkommen zur Regio App
+    </h1>
+    <button class="p-1 max-w-sm m-5" @click="$auth.loginWith('cloud')">
+      Mit Cloud-Account einloggen
+    </button>
   </div>
 </template>
 
@@ -161,8 +184,7 @@ import { Vue, Component } from 'vue-property-decorator'
 class LocalGroup {
   representatives: Representative[]
   name: string
-  openNewDeli = false
-
+  newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
 
   constructor(data: any) {
@@ -173,13 +195,19 @@ class LocalGroup {
   }
 
   cancelNewDeli() {
-    this.openNewDeli = false
+    this.newDeliMenu = 'CLOSED'
     this.newDeli.name = ''
     this.newDeli.phone = ''
   }
 
-  saveNewDeli(axios: any) {
-    axios.post('http://localhost:8000/representatives', this.newDeli)
+  async saveNewDeli(axios: any) {
+    this.newDeliMenu = 'LOADING'
+    this.representatives.push(
+      new Representative(
+        await axios.post('http://localhost:8000/representatives', this.newDeli)
+          .data
+      )
+    )
     this.cancelNewDeli()
   }
 }
@@ -251,30 +279,7 @@ class Representative {
 export default class IndexView extends Vue {
   openMenu: null | HTMLElement = null
 
-  localGroups: any = [
-    {
-      name: 'Unna',
-      finished: false,
-      representatives: [
-        new Representative({
-          id: '1',
-          name: 'Vincent',
-          phone: '+49 15770265987',
-        }),
-      ],
-    },
-    {
-      name: 'Berlin',
-      finished: true,
-      representatives: [
-        new Representative({
-          id: '2',
-          name: 'Karl',
-          phone: '+49 1523 6928387',
-        }),
-      ],
-    },
-  ]
+  localGroups: any = []
 
   $axios: any
 
@@ -298,8 +303,14 @@ input[type='submit'] {
 }
 button:hover,
 .button:hover,
-input[type='submit']:hover {
+input[type='submit']:hover,
+input[disabled],
+button[disabled] {
   @apply text-primary bg-gray-200 border border-primary;
+}
+input[disabled],
+button[disabled] {
+  @apply pointer-events-none;
 }
 details > summary {
   list-style: none;

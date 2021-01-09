@@ -51,7 +51,35 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/auth-next',
   ],
+
+  middleware: ['auth'],
+
+  auth: {
+    strategies: {
+      local: false,
+      cloud: {
+        scheme: 'oauth2',
+        endpoints: {
+          authorization:
+            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/auth',
+          token:
+            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/token',
+          userInfo:
+            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/userinfo',
+        },
+        token: {
+          maxAge: 600,
+        },
+        responseType: 'code',
+        grantType: 'authorization_code',
+        clientId: 'regio',
+        scope: [],
+        codeChallengeMethod: 'plain',
+      },
+    },
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
