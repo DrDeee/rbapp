@@ -52,7 +52,7 @@
                     >
                       <li>
                         <button
-                          class="p-2 w-full text-center rounded-b-none"
+                          class="p-2 w-full text-center rounded-t-lg rounded-b-none"
                           @click="deli.status = 'EX'"
                         >
                           Zum Ex-Deli machen
@@ -60,7 +60,7 @@
                       </li>
                       <li>
                         <button
-                          class="p-2 w-full text-center rounded-t-none"
+                          class="p-2 w-full text-center rounded-b-lg rounded-t-none"
                           @click="localGroup.removeRep(deli)"
                         >
                           Kontaktdaten löschen
@@ -273,6 +273,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { NuxtAxiosInstance } from '@nuxtjs/axios'
 
 class LocalGroup {
   allRepresentatives: Representative[]
@@ -281,9 +282,12 @@ class LocalGroup {
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
 
-  constructor(data: any) {
+  axios: NuxtAxiosInstance
+
+  constructor(data: any, axios: NuxtAxiosInstance) {
+    this.axios = axios
     this.allRepresentatives = data.representatives.map(
-      (representative: any) => new Representative(representative)
+      (representative: any) => new Representative(representative, axios)
     )
     this.name = data.name
     this.id = data.id
@@ -308,14 +312,15 @@ class LocalGroup {
     this.newDeli.phone = ''
   }
 
-  async saveNewDeli(axios: any) {
+  async saveNewDeli() {
     this.newDeliMenu = 'LOADING'
     this.allRepresentatives.push(
       new Representative(
-        await axios.$post(
+        await this.axios.$post(
           `localGroups/${this.id}/representatives`,
           this.newDeli
-        )
+        ),
+        this.axios
       )
     )
     this.cancelNewDeli()
@@ -328,10 +333,12 @@ class Representative {
   phone: string
   editing = false
   menuOpen = false
+  axios: NuxtAxiosInstance
 
   id: string
 
-  constructor(data: any) {
+  constructor(data: any, axios: NuxtAxiosInstance) {
+    this.axios = axios
     this.name = data.name
     this.phone = data.phone
     this.originalPhone = this.phone
@@ -367,8 +374,9 @@ class Representative {
   }
 
   _status: 'CURRENT' | 'EX'
-  set status(value: 'CURRENT' | 'EX') {
-    this._status = value
+  set status(status: 'CURRENT' | 'EX') {
+    this.axios.patch(`representatives/${this.id}`, { status })
+    this._status = status
     this.menuOpen = false
   }
 
@@ -400,7 +408,7 @@ export default class IndexView extends Vue {
     this.$axios.get('localGroups').then((response: any) => {
       console.log(response)
       this.localGroups = response.data.map(
-        (localGroup: any) => new LocalGroup(localGroup)
+        (localGroup: any) => new LocalGroup(localGroup, this.$axios)
       )
     })
   }
@@ -426,7 +434,6 @@ button:active,
 input[type='submit']:active {
   @apply rounded-full flex justify-center items-center bg-primary text-gray-200
       border border-primary;
-  text-shadow: ;
 }
 
 details > summary {
