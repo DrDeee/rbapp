@@ -300,20 +300,20 @@ class LocalGroup {
   async removeRep(rep: Representative) {
     await this.axios.delete(`/localGroups/${this.id}/representatives/${rep.id}`)
     const index = this.representatives.findIndex((r) => r === rep)
-    this.representatives.splice(index)
+    this.representatives.splice(index, 1)
   }
 
   async makeCurrent(rep: Representative) {
     await this.axios.put(`/localGroups/${this.id}/representatives/${rep.id}`)
     const index = this.exRepresentatives.findIndex((r) => r === rep)
-    this.exRepresentatives.splice(index)
+    this.exRepresentatives.splice(index, 1)
     this.representatives.push(rep)
   }
 
   async makeEx(rep: Representative) {
     await this.axios.put(`/localGroups/${this.id}/exRepresentatives/${rep.id}`)
     const index = this.representatives.findIndex((r) => r === rep)
-    this.representatives.splice(index)
+    this.representatives.splice(index, 1)
     this.exRepresentatives.push(rep)
   }
 
