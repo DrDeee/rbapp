@@ -200,7 +200,7 @@
                       </li>
                       <li>
                         <button
-                          class="p-2 w-full text-center rounded-b-lg rounded-b-none"
+                          class="p-2 w-full text-center rounded-b-lg rounded-t-none"
                           @click="localGroup.removeRep(deli)"
                         >
                           Kontaktdaten löschen
