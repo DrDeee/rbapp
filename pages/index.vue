@@ -24,52 +24,10 @@
             <ul>
               <li
                 v-for="deli of localGroup.representatives"
-                :key="deli.name"
-                class="flex flex-col justify-around text-lg p-1 deli"
+                :key="deli.id"
+                class="deli"
               >
-                <div class="flex justify-between p-1 mb-2">
-                  {{ deli.name }}
-                  <!--
-                  If the menu is open somehow the event handler on the main
-                  div triggers also and the menu isn't hidden :(
-                  @click.stop prevents this somehow
-                -->
-                  <details
-                    :open="openMenu === deli.id"
-                    @toggle="
-                      openMenu = $event.target.attributes['open']
-                        ? deli.id
-                        : null
-                    "
-                    @click.stop
-                  >
-                    <summary class="text-primary">
-                      <font-awesome-icon icon="ellipsis-h" />
-                    </summary>
-                    <ul
-                      class="absolute left-auto bg-primary rounded-lg menu-right text-lg"
-                      @click="openMenu = null"
-                    >
-                      <li>
-                        <button
-                          class="p-2 w-full text-center rounded-t-lg rounded-b-none"
-                          @click="localGroup.makeEx(deli)"
-                        >
-                          Zum Ex-Deli machen
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          class="p-2 w-full text-center rounded-b-lg rounded-t-none"
-                          @click="localGroup.removeRep(deli)"
-                        >
-                          Kontaktdaten löschen
-                        </button>
-                      </li>
-                    </ul>
-                  </details>
-                </div>
-                <div class="flex justify-between">
+                <div class="flex items-center text-lg p-1 h-24">
                   <button
                     v-if="!deli.editing"
                     class="mx-1 w-8 h-8 flex-none"
@@ -84,32 +42,85 @@
                   >
                     <font-awesome-icon icon="times" />
                   </button>
-                  <a
-                    v-if="!deli.editing"
-                    class="text-center text-primary flex items-center"
-                    :href="'tel:' + deli.phone"
+
+                  <div class="mx-2 flex-grow flex flex-col justify-between">
+                    <div class="flex justify-between mb-2">
+                      <label v-if="!deli.editing" class="mx-1">
+                        {{ deli.name }}
+                      </label>
+                      <input v-else v-model="deli.name" class="w-full" />
+                      <!--
+                    If the menu is open somehow the event handler on the main
+                    div triggers also and the menu isn't hidden :(
+                    @click.stop prevents this somehow
+                  -->
+                      <details
+                        v-if="!deli.editing"
+                        :open="openMenu === deli.id"
+                        @toggle="
+                          openMenu = $event.target.attributes['open']
+                            ? deli.id
+                            : null
+                        "
+                        @click.stop
+                      >
+                        <summary class="text-primary">
+                          <font-awesome-icon icon="ellipsis-h" />
+                        </summary>
+                        <ul
+                          class="absolute left-auto bg-primary rounded-lg menu-right text-lg"
+                          @click="openMenu = null"
+                        >
+                          <li>
+                            <button
+                              class="p-2 w-full text-center rounded-t-lg rounded-b-none"
+                              @click="localGroup.makeEx(deli)"
+                            >
+                              Zum Ex-Deli machen
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              class="p-2 w-full text-center rounded-b-lg rounded-t-none"
+                              @click="localGroup.removeRep(deli)"
+                            >
+                              Kontaktdaten löschen
+                            </button>
+                          </li>
+                        </ul>
+                      </details>
+                    </div>
+                    <div class="flex justify-between">
+                      <a
+                        v-if="!deli.editing"
+                        class="text-center text-primary flex items-center"
+                        :href="'tel:' + deli.phone"
+                      >
+                        {{ deli.formattedPhone }}
+                      </a>
+                      <input
+                        v-else
+                        v-model="deli.phone"
+                        class="text-primary px-1 rounded-lg w-full border border-solid border-primary"
+                        type="phone"
+                      />
+                      <div v-if="!deli.editing" class="flex">
+                        <a :href="deli.waMe" class="mx-1 button w-8 h-8">
+                          <font-awesome-icon :icon="['fab', 'whatsapp']" />
+                        </a>
+                        <button class="w-8 h-8" @click="deli.copyNumber()">
+                          <font-awesome-icon icon="copy" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    v-if="deli.editing"
+                    class="flex-none mx-1 w-8 h-8"
+                    @click="deli.save()"
                   >
-                    {{ deli.formattedPhone }}
-                  </a>
-                  <input
-                    v-else
-                    v-model="deli.phone"
-                    class="text-primary min-w-0 px-1 rounded-lg border border-solid border-primary"
-                    type="phone"
-                  />
-                  <div v-if="!deli.editing" class="flex">
-                    <a :href="deli.waMe" class="mx-1 button w-8 h-8">
-                      <font-awesome-icon :icon="['fab', 'whatsapp']" />
-                    </a>
-                    <button class="w-8 h-8" @click="deli.copyNumber()">
-                      <font-awesome-icon icon="copy" />
-                    </button>
-                  </div>
-                  <div v-else class="flex-none">
-                    <button class="mx-1 w-8 h-8" @click="deli.save()">
-                      <font-awesome-icon icon="save" />
-                    </button>
-                  </div>
+                    <font-awesome-icon icon="save" />
+                  </button>
                 </div>
               </li>
             </ul>
@@ -175,6 +186,7 @@
                   @click.stop prevents this somehow
                 -->
                   <details
+                    v-if="!deli.editing"
                     :open="openMenu === deli.id"
                     @toggle="
                       openMenu = $event.target.attributes['open']
@@ -340,8 +352,9 @@ class LocalGroup {
 
 class Representative {
   name: string
-  originalPhone: string
+  originalName: string
   phone: string
+  originalPhone: string
   editing = false
   menuOpen = false
   axios: NuxtAxiosInstance
@@ -351,16 +364,10 @@ class Representative {
   constructor(data: any, axios: NuxtAxiosInstance) {
     this.axios = axios
     this.name = data.name
+    this.originalName = this.name
     this.phone = data.phone
     this.originalPhone = this.phone
     this.id = data.id
-  }
-
-  toggleMenu(event: Event, localGroups: { representatives: Representative[] }) {
-    console.log(event)
-    const target = event?.target as HTMLElement
-    this.menuOpen = !!target.getAttribute('open')
-    console.log(localGroups)
   }
 
   get waMe() {
@@ -370,14 +377,19 @@ class Representative {
   }
 
   async save() {
-    await this.axios.patch(`/representatives/${this.id}`, { phone: this.phone })
+    await this.axios.patch(`/representatives/${this.id}`, {
+      phone: this.phone,
+      name: this.name,
+    })
     this.editing = false
     this.originalPhone = this.phone
+    this.originalName = this.name
   }
 
   cancel() {
     this.editing = false
     this.phone = this.originalPhone
+    this.name = this.originalName
   }
 
   copyNumber() {
@@ -406,7 +418,6 @@ export default class IndexView extends Vue {
 
   created() {
     this.$axios.get('localGroups').then((response: any) => {
-      console.log(response)
       this.localGroups = response.data.map(
         (localGroup: any) => new LocalGroup(localGroup, this.$axios)
       )
@@ -443,12 +454,8 @@ details > summary::-webkit-details-marker {
   display: none;
 }
 .deli + .deli::before {
+  @apply block rounded-full w-11/12 m-auto h-1 bg-secondary;
   content: '';
-  background: rgba(0, 0, 0, 0.4);
-  height: 3px;
-  border-radius: 100px;
-  width: 90%;
-  margin: auto;
 }
 
 input {
