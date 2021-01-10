@@ -53,7 +53,7 @@
                       <li>
                         <button
                           class="p-2 w-full text-center rounded-t-lg rounded-b-none"
-                          @click="deli.status = 'EX'"
+                          @click="localGroup.makeEx(deli)"
                         >
                           Zum Ex-Deli machen
                         </button>
@@ -193,7 +193,7 @@
                       <li>
                         <button
                           class="p-2 w-full text-center rounded-b-none"
-                          @click="deli.status = 'CURRENT'"
+                          @click="localGroup.makeCurrent(deli)"
                         >
                           Zum Deli machen
                         </button>
@@ -201,7 +201,7 @@
                       <li>
                         <button
                           class="p-2 w-full text-center rounded-t-none"
-                          @click="deli.remove()"
+                          @click="localGroup.removeRep(deli)"
                         >
                           Kontaktdaten löschen
                         </button>
@@ -276,7 +276,8 @@ import { Vue, Component } from 'vue-property-decorator'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 
 class LocalGroup {
-  allRepresentatives: Representative[]
+  representatives: Representative[]
+  exRepresentatives: Representative[]
   name: string
   id: string
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
@@ -286,24 +287,34 @@ class LocalGroup {
 
   constructor(data: any, axios: NuxtAxiosInstance) {
     this.axios = axios
-    this.allRepresentatives = data.representatives.map(
-      (representative: any) => new Representative(representative, axios)
+    this.representatives = data.representatives.map(
+      (rep: any) => new Representative(rep, axios)
+    )
+    this.exRepresentatives = data.exRepresentatives.map(
+      (rep: any) => new Representative(rep, axios)
     )
     this.name = data.name
     this.id = data.id
   }
 
-  get representatives() {
-    return this.allRepresentatives.filter((rep) => rep.status === 'CURRENT')
+  async removeRep(rep: Representative) {
+    await this.axios.delete(`/localGroups/${this.id}/representatives/${rep.id}`)
+    const index = this.representatives.findIndex((r) => r === rep)
+    this.representatives.splice(index)
   }
 
-  get exRepresentatives() {
-    return this.allRepresentatives.filter((rep) => rep.status === 'EX')
+  async makeCurrent(rep: Representative) {
+    await this.axios.put(`/localGroups/${this.id}/representatives/${rep.id}`)
+    const index = this.exRepresentatives.findIndex((r) => r === rep)
+    this.exRepresentatives.splice(index)
+    this.representatives.push(rep)
   }
 
-  removeRep(rep: Representative) {
-    const index = this.allRepresentatives.findIndex((r) => r === rep)
-    this.allRepresentatives.splice(index)
+  async makeEx(rep: Representative) {
+    await this.axios.put(`/localGroups/${this.id}/exRepresentatives/${rep.id}`)
+    const index = this.representatives.findIndex((r) => r === rep)
+    this.representatives.splice(index)
+    this.exRepresentatives.push(rep)
   }
 
   cancelNewDeli() {
@@ -314,7 +325,7 @@ class LocalGroup {
 
   async saveNewDeli() {
     this.newDeliMenu = 'LOADING'
-    this.allRepresentatives.push(
+    this.representatives.push(
       new Representative(
         await this.axios.$post(
           `localGroups/${this.id}/representatives`,
@@ -342,7 +353,6 @@ class Representative {
     this.name = data.name
     this.phone = data.phone
     this.originalPhone = this.phone
-    this._status = data.status
     this.id = data.id
   }
 
@@ -359,7 +369,8 @@ class Representative {
     )
   }
 
-  save() {
+  async save() {
+    await this.axios.patch(`/representatives/${this.id}`, { phone: this.phone })
     this.editing = false
     this.originalPhone = this.phone
   }
@@ -371,17 +382,6 @@ class Representative {
 
   copyNumber() {
     window.navigator.clipboard.writeText(this.formattedPhone)
-  }
-
-  _status: 'CURRENT' | 'EX'
-  set status(status: 'CURRENT' | 'EX') {
-    this.axios.patch(`representatives/${this.id}`, { status })
-    this._status = status
-    this.menuOpen = false
-  }
-
-  get status() {
-    return this._status
   }
 
   get phoneLink() {
