@@ -192,7 +192,7 @@
                     >
                       <li>
                         <button
-                          class="p-2 w-full text-center rounded-b-none"
+                          class="p-2 w-full text-center rounded-t-lg rounded-b-none"
                           @click="localGroup.makeCurrent(deli)"
                         >
                           Zum Deli machen
@@ -200,7 +200,7 @@
                       </li>
                       <li>
                         <button
-                          class="p-2 w-full text-center rounded-t-none"
+                          class="p-2 w-full text-center rounded-b-lg rounded-b-none"
                           @click="localGroup.removeRep(deli)"
                         >
                           Kontaktdaten löschen
