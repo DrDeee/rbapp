@@ -38,6 +38,8 @@ export default {
         'faCopy',
         'faEllipsisH',
         'faEdit',
+        'faHome',
+        'faUser',
         'faSave',
         'faTimes',
       ],
@@ -54,7 +56,9 @@ export default {
     '@nuxtjs/auth-next',
   ],
 
-  middleware: ['auth'],
+  router: {
+    middleware: ['auth'],
+  },
 
   auth: {
     strategies: {
@@ -82,7 +86,9 @@ export default {
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: 'http://buddy.berlinc.net/api/',
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},

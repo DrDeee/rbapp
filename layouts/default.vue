@@ -1,10 +1,39 @@
 <template>
-  <div>
+  <div class="flex flex-col h-screen justify-between">
     <Nuxt />
+    <footer v-if="$auth.loggedIn">
+      <nav class="h-full">
+        <ul
+          class="flex justify-around border-t-2 border-primary text-primary h-full"
+        >
+          <li class="flex flex-col justify-center items-center w-6/12">
+            <NuxtLink to="/">
+              <font-awesome-icon icon="home" />
+            </NuxtLink>
+          </li>
+          <li class="flex flex-col justify-center items-center w-6/12">
+            <NuxtLink to="/profile">
+              <font-awesome-icon icon="user" />
+            </NuxtLink>
+          </li>
+        </ul>
+      </nav>
+    </footer>
   </div>
 </template>
 
 <style>
+header,
+footer {
+  height: 50px;
+  @apply bg-white;
+}
+main {
+  height: calc(100vh - 100px);
+}
+.nuxt-link-exact-active {
+  @apply text-secondary;
+}
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -16,40 +45,8 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
+html,
+body {
+  height: 100%;
 }
 </style>

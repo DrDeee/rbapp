@@ -58,7 +58,7 @@
             </li>
             <li>
               <button
-                class="p-2 w-full text-center rounded-b-lg rounded-t-none"
+                class="p-2 w-full text-center rounded-b-lg rounded-t-none shadow-none"
                 @click="localGroup.removeRep(representative)"
               >
                 Kontaktdaten löschen
