@@ -87,7 +87,8 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'http://buddy.berlinc.net/api/',
+    baseURL: 'https://buddy.berlinc.net/api/',
+    https: true,
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
