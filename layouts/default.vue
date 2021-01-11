@@ -7,12 +7,12 @@
           class="flex justify-around border-t-2 border-primary text-primary h-full"
         >
           <li class="flex flex-col justify-center items-center w-6/12">
-            <NuxtLink to="/">
+            <NuxtLink class="w-full" to="/">
               <font-awesome-icon icon="home" />
             </NuxtLink>
           </li>
           <li class="flex flex-col justify-center items-center w-6/12">
-            <NuxtLink to="/profile">
+            <NuxtLink class="w-full" to="/profile">
               <font-awesome-icon icon="user" />
             </NuxtLink>
           </li>
