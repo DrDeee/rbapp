@@ -14,10 +14,10 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: [],
+  css: ['~/assets/style.css'],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
-  plugins: [],
+  plugins: ['~/plugins/real-screen-height.client.js'],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
   components: true,

@@ -262,42 +262,11 @@ export default class IndexView extends Vue {
 }
 </script>
 <style>
-button:hover,
-.button:hover,
-input[type='submit']:hover,
-input[disabled],
-button[disabled] {
-  @apply text-primary bg-gray-200 border border-primary;
-}
-input[disabled],
-button[disabled] {
-  @apply pointer-events-none;
-}
-button,
-.button,
-input[type='submit'],
-button:active,
-.button:active,
-input[type='submit']:active {
-  @apply rounded-full flex justify-center items-center bg-primary text-gray-200
-      border border-primary px-2 py-1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-
-details > summary {
-  list-style: none;
-}
-details > summary::-webkit-details-marker {
-  display: none;
-}
 .deli + .deli::before {
   @apply block rounded-full w-11/12 m-auto h-1 bg-secondary;
   content: '';
 }
 
-input {
-  @apply text-primary px-1 rounded-lg border border-solid border-primary;
-}
 .menu-right {
   left: calc(100% - 210px);
 }

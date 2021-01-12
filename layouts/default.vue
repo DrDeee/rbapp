@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen justify-between">
+  <div class="flex flex-col h-max-inner justify-between">
     <Nuxt />
     <footer v-if="$auth.loggedIn">
       <nav class="h-full">
@@ -32,7 +32,7 @@ footer {
   @apply bg-white;
 }
 main {
-  height: calc(100vh - 100px);
+  height: calc(var(--inner-height) - 100px);
 }
 .nuxt-link-exact-active {
   @apply text-secondary;
