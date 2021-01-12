@@ -71,6 +71,7 @@
         <a
           v-if="!representative.editing"
           class="text-center text-primary flex items-center"
+          target="_blank"
           :href="'tel:' + representative.phone"
         >
           {{ representative.formattedPhone }}
@@ -82,7 +83,11 @@
           type="phone"
         />
         <div v-if="!representative.editing" class="flex">
-          <a :href="representative.waMe" class="mx-1 button w-8 h-8">
+          <a
+            :href="representative.waMe"
+            class="mx-1 button w-8 h-8"
+            target="_blank"
+          >
             <font-awesome-icon :icon="['fab', 'whatsapp']" />
           </a>
           <button class="w-8 h-8" @click="representative.copyNumber()">
