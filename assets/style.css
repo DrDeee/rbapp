@@ -14,10 +14,8 @@ button,
 input[type='submit'],
 button:active,
 .button:active,
-input[type='submit']:active,
-{
-  @apply rounded-full flex justify-center items-center bg-primary text-gray-200
-      border border-primary px-2 py-1;
+input[type='submit']:active {
+  @apply rounded-full flex justify-center items-center bg-primary text-gray-200 border border-primary px-2 py-1;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
