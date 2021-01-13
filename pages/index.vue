@@ -26,181 +26,189 @@
                 {{ localGroup.name }}
               </h2>
             </summary>
-            <div class="border-t-2 flex flex-col justify-center">
-              <h3 class="text-xl">Fragen:</h3>
-              <form class="flex flex-col">
-                <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
-                  Hat die OG vor am 18.03 zu streiken?
-                </label>
-                <select
-                  :id="localGroup.id + '-streik'"
-                  v-model="localGroup.questionary.streik"
-                  class="mb-5"
-                >
-                  <option :value="null">-</option>
-                  <option value="1">Sicher nicht</option>
-                  <option value="2">Wahrscheinlich nicht</option>
-                  <option value="3">Wahrscheinlich schon</option>
-                  <option value="4">Sicher</option>
-                </select>
-                <label :for="localGroup.id + '-why-not'" class="mb-3">
-                  Warum nicht?
-                </label>
-                <textarea
-                  :id="localGroup.id + '-why-not'"
-                  v-model="localGroup.questionary['why-not']"
-                  class="mb-5"
-                >
-                </textarea>
-                <label :for="localGroup.id + '-orga'" class="mb-3">
-                  Habt ihr genug Menschen für die Orga?
-                </label>
-                <select
-                  :id="localGroup.id + '-orga'"
-                  v-model="localGroup.questionary.orga"
-                  class="mb-5"
-                >
-                  <option :value="null">-</option>
-                  <option value="1">Nein überhaupt nicht</option>
-                  <option value="2">Ein bisschen knapp</option>
-                  <option value="3">Genau richtig</option>
-                  <option value="4">Fast zu viele</option>
-                </select>
-                <label :for="localGroup.id + '-technik'" class="mb-3">
-                  Habt ihr genug Technik?
-                </label>
-                <select
-                  :id="localGroup.id + '-technik'"
-                  v-model="localGroup.questionary.technik"
-                  class="mb-5"
-                >
-                  <option :value="null">-</option>
-                  <option value="1">Nein überhaupt nicht</option>
-                  <option value="2">Ein bisschen knapp</option>
-                  <option value="3">Genau richtig</option>
-                  <option value="4">Fast zu viel</option>
-                </select>
-                <label :for="localGroup.id + '-mobi'" class="mb-3">
-                  Hat die OG schon Mobimaterial bestellt?
-                </label>
-                <select
-                  :id="localGroup.id + '-mobi'"
-                  v-model="localGroup.questionary.mobi"
-                  class="mb-5"
-                >
-                  <option :value="null">-</option>
-                  <option value="1">Nein &amp; wird sie nicht</option>
-                  <option value="2">Nein, aber will sie noch</option>
-                  <option value="3">Ja</option>
-                </select>
-                <label :for="localGroup.id + '-starter'" class="mb-3">
-                  Habt ihr alle Sachen aus den Starterpacks?
-                </label>
-                <div
-                  id="localGroup.id + '-starter'"
-                  class="mb-5 flex justify-around"
-                >
-                  <div>
-                    <label :for="localGroup.id + 'starter-yes'"> Ja </label>
-                    <input
-                      :id="localGroup.id + '-starter-yes'"
-                      v-model="localGroup.questionary.starter"
-                      :name="localGroup.id + '-starter'"
-                      type="radio"
-                      :value="true"
-                    />
-                  </div>
-                  <div>
-                    <label :for="localGroup.id + 'starter-no'"> Nein </label>
-                    <input
-                      :id="localGroup.id + '-starter-no'"
-                      v-model="localGroup.questionary.starter"
-                      :name="localGroup.id + '-starter'"
-                      type="radio"
-                      :value="false"
-                    />
-                  </div>
-                </div>
-              </form>
-              <h3 class="text-xl">Delis:</h3>
-              <ul>
-                <li
-                  v-for="deli of localGroup.representatives"
-                  :key="deli.id"
-                  class="deli"
-                >
-                  <representative
-                    :local-group="localGroup"
-                    :representative="deli"
-                    :open-menu.sync="openMenu"
-                    :is-ex="false"
-                  />
-                </li>
-              </ul>
-              <button
-                v-if="localGroup.newDeliMenu == 'CLOSED'"
-                class="m-3 text-xl inline-block"
-                @click="localGroup.newDeliMenu = 'OPEN'"
-              >
-                Neuer Deli
-              </button>
-              <form
-                v-else
-                class="flex flex-col px-1"
-                :class="{
-                  'text-gray-600': localGroup.newDeliMenu === 'LOADING',
-                }"
-                @submit.prevent="localGroup.saveNewDeli($axios)"
-              >
-                <div class="flex justify-between">
-                  <label class="my-1"> Name: </label>
-                  <input
-                    v-model="localGroup.newDeli.name"
-                    class="my-1"
-                    :disabled="localGroup.newDeliMenu === 'LOADING'"
-                    required
-                  />
-                </div>
-                <div class="flex justify-between">
-                  <label class="my-1 w-5"> Nummer: </label>
-                  <input
-                    v-model="localGroup.newDeli.phone"
-                    class="my-1"
-                    type="tel"
-                    :disabled="localGroup.newDeliMenu === 'LOADING'"
-                  />
-                </div>
-                <div class="flex justify-around mt-1">
-                  <button
-                    class="px-1"
-                    :disabled="localGroup.newDeliMenu == 'LOADING'"
-                    @click="localGroup.cancelNewDeli()"
+            <div
+              class="border-t-2 flex flex-col justify-center md:flex-row md:justify-around md:flex-wrap min-w-md"
+            >
+              <section>
+                <h3 class="text-xl">Fragen:</h3>
+                <form class="flex flex-col">
+                  <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
+                    Hat die OG vor am 18.03 zu streiken?
+                  </label>
+                  <select
+                    :id="localGroup.id + '-streik'"
+                    v-model="localGroup.questionary.streik"
+                    class="mb-5"
                   >
-                    Abbrechen
-                  </button>
-                  <input
-                    type="submit"
-                    value="Speichern"
-                    class="px-1"
-                    :disabled="localGroup.newDeliMenu == 'LOADING'"
-                  />
-                </div>
-              </form>
-              <h3 class="text-xl">Ex-Delis:</h3>
-              <ul>
-                <li
-                  v-for="deli of localGroup.exRepresentatives"
-                  :key="deli.id"
-                  class="flex flex-col justify-around text-lg p-1 deli"
+                    <option :value="null">-</option>
+                    <option value="1">Sicher nicht</option>
+                    <option value="2">Wahrscheinlich nicht</option>
+                    <option value="3">Wahrscheinlich schon</option>
+                    <option value="4">Sicher</option>
+                  </select>
+                  <label :for="localGroup.id + '-why-not'" class="mb-3">
+                    Warum nicht?
+                  </label>
+                  <textarea
+                    :id="localGroup.id + '-why-not'"
+                    v-model="localGroup.questionary['why-not']"
+                    class="mb-5"
+                  >
+                  </textarea>
+                  <label :for="localGroup.id + '-orga'" class="mb-3">
+                    Habt ihr genug Menschen für die Orga?
+                  </label>
+                  <select
+                    :id="localGroup.id + '-orga'"
+                    v-model="localGroup.questionary.orga"
+                    class="mb-5"
+                  >
+                    <option :value="null">-</option>
+                    <option value="1">Nein überhaupt nicht</option>
+                    <option value="2">Ein bisschen knapp</option>
+                    <option value="3">Genau richtig</option>
+                    <option value="4">Fast zu viele</option>
+                  </select>
+                  <label :for="localGroup.id + '-technik'" class="mb-3">
+                    Habt ihr genug Technik?
+                  </label>
+                  <select
+                    :id="localGroup.id + '-technik'"
+                    v-model="localGroup.questionary.technik"
+                    class="mb-5"
+                  >
+                    <option :value="null">-</option>
+                    <option value="1">Nein überhaupt nicht</option>
+                    <option value="2">Ein bisschen knapp</option>
+                    <option value="3">Genau richtig</option>
+                    <option value="4">Fast zu viel</option>
+                  </select>
+                  <label :for="localGroup.id + '-mobi'" class="mb-3">
+                    Hat die OG schon Mobimaterial bestellt?
+                  </label>
+                  <select
+                    :id="localGroup.id + '-mobi'"
+                    v-model="localGroup.questionary.mobi"
+                    class="mb-5"
+                  >
+                    <option :value="null">-</option>
+                    <option value="1">Nein &amp; wird sie nicht</option>
+                    <option value="2">Nein, aber will sie noch</option>
+                    <option value="3">Ja</option>
+                  </select>
+                  <label :for="localGroup.id + '-starter'" class="mb-3">
+                    Habt ihr alle Sachen aus den Starterpacks?
+                  </label>
+                  <div
+                    id="localGroup.id + '-starter'"
+                    class="mb-5 flex justify-around"
+                  >
+                    <div>
+                      <label :for="localGroup.id + 'starter-yes'"> Ja </label>
+                      <input
+                        :id="localGroup.id + '-starter-yes'"
+                        v-model="localGroup.questionary.starter"
+                        :name="localGroup.id + '-starter'"
+                        type="radio"
+                        :value="true"
+                      />
+                    </div>
+                    <div>
+                      <label :for="localGroup.id + 'starter-no'"> Nein </label>
+                      <input
+                        :id="localGroup.id + '-starter-no'"
+                        v-model="localGroup.questionary.starter"
+                        :name="localGroup.id + '-starter'"
+                        type="radio"
+                        :value="false"
+                      />
+                    </div>
+                  </div>
+                </form>
+              </section>
+              <section class="flex flex-col">
+                <h3 class="text-xl">Delis:</h3>
+                <ul>
+                  <li
+                    v-for="deli of localGroup.representatives"
+                    :key="deli.id"
+                    class="deli"
+                  >
+                    <representative
+                      :local-group="localGroup"
+                      :representative="deli"
+                      :open-menu.sync="openMenu"
+                      :is-ex="false"
+                    />
+                  </li>
+                </ul>
+                <button
+                  v-if="localGroup.newDeliMenu == 'CLOSED'"
+                  class="m-3 text-xl inline-block"
+                  @click="localGroup.newDeliMenu = 'OPEN'"
                 >
-                  <representative
-                    :local-group="localGroup"
-                    :representative="deli"
-                    :open-menu.sync="openMenu"
-                    is-ex
-                  />
-                </li>
-              </ul>
+                  Neuer Deli
+                </button>
+                <form
+                  v-else
+                  class="flex flex-col px-1"
+                  :class="{
+                    'text-gray-600': localGroup.newDeliMenu === 'LOADING',
+                  }"
+                  @submit.prevent="localGroup.saveNewDeli($axios)"
+                >
+                  <div class="flex justify-between">
+                    <label class="my-1"> Name: </label>
+                    <input
+                      v-model="localGroup.newDeli.name"
+                      class="my-1"
+                      :disabled="localGroup.newDeliMenu === 'LOADING'"
+                      required
+                    />
+                  </div>
+                  <div class="flex justify-between">
+                    <label class="my-1 w-5"> Nummer: </label>
+                    <input
+                      v-model="localGroup.newDeli.phone"
+                      class="my-1"
+                      type="tel"
+                      :disabled="localGroup.newDeliMenu === 'LOADING'"
+                    />
+                  </div>
+                  <div class="flex justify-around mt-1">
+                    <button
+                      class="px-1"
+                      :disabled="localGroup.newDeliMenu == 'LOADING'"
+                      @click="localGroup.cancelNewDeli()"
+                    >
+                      Abbrechen
+                    </button>
+                    <input
+                      type="submit"
+                      value="Speichern"
+                      class="px-1"
+                      :disabled="localGroup.newDeliMenu == 'LOADING'"
+                    />
+                  </div>
+                </form>
+              </section>
+              <section>
+                <h3 class="text-xl">Ex-Delis:</h3>
+                <ul>
+                  <li
+                    v-for="deli of localGroup.exRepresentatives"
+                    :key="deli.id"
+                    class="flex flex-col justify-around text-lg p-1 deli"
+                  >
+                    <representative
+                      :local-group="localGroup"
+                      :representative="deli"
+                      :open-menu.sync="openMenu"
+                      is-ex
+                    />
+                  </li>
+                </ul>
+              </section>
             </div>
           </details>
         </li>
