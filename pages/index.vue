@@ -27,6 +27,101 @@
               </h2>
             </summary>
             <div class="border-t-2 flex flex-col justify-center">
+              <h3 class="text-xl">Fragen:</h3>
+              <form class="flex flex-col">
+                <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
+                  Hat die OG vor am 18.03 zu streiken?
+                </label>
+                <select
+                  :id="localGroup.id + '-streik'"
+                  v-model="localGroup.questionary.streik"
+                  class="mb-5"
+                >
+                  <option :value="null">-</option>
+                  <option value="1">Sicher nicht</option>
+                  <option value="2">Wahrscheinlich nicht</option>
+                  <option value="3">Wahrscheinlich schon</option>
+                  <option value="4">Sicher</option>
+                </select>
+                <label :for="localGroup.id + '-why-not'" class="mb-3">
+                  Warum nicht?
+                </label>
+                <textarea
+                  :id="localGroup.id + '-why-not'"
+                  v-model="localGroup.questionary['why-not']"
+                  class="mb-5"
+                >
+                </textarea>
+                <label :for="localGroup.id + '-orga'" class="mb-3">
+                  Habt ihr genug Menschen für die Orga?
+                </label>
+                <select
+                  :id="localGroup.id + '-orga'"
+                  v-model="localGroup.questionary.orga"
+                  class="mb-5"
+                >
+                  <option :value="null">-</option>
+                  <option value="1">Nein überhaupt nicht</option>
+                  <option value="2">Ein bisschen knapp</option>
+                  <option value="3">Genau richtig</option>
+                  <option value="4">Fast zu viele</option>
+                </select>
+                <label :for="localGroup.id + '-technik'" class="mb-3">
+                  Habt ihr genug Technik?
+                </label>
+                <select
+                  :id="localGroup.id + '-technik'"
+                  v-model="localGroup.questionary.technik"
+                  class="mb-5"
+                >
+                  <option :value="null">-</option>
+                  <option value="1">Nein überhaupt nicht</option>
+                  <option value="2">Ein bisschen knapp</option>
+                  <option value="3">Genau richtig</option>
+                  <option value="4">Fast zu viel</option>
+                </select>
+                <label :for="localGroup.id + '-mobi'" class="mb-3">
+                  Hat die OG schon Mobimaterial bestellt?
+                </label>
+                <select
+                  :id="localGroup.id + '-mobi'"
+                  v-model="localGroup.questionary.mobi"
+                  class="mb-5"
+                >
+                  <option :value="null">-</option>
+                  <option value="1">Nein &amp; wird sie nicht</option>
+                  <option value="2">Nein, aber will sie noch</option>
+                  <option value="3">Ja</option>
+                </select>
+                <label :for="localGroup.id + '-starter'" class="mb-3">
+                  Habt ihr alle Sachen aus den Starterpacks?
+                </label>
+                <div
+                  id="localGroup.id + '-starter'"
+                  class="mb-5 flex justify-around"
+                >
+                  <div>
+                    <label :for="localGroup.id + 'starter-yes'"> Ja </label>
+                    <input
+                      :id="localGroup.id + '-starter-yes'"
+                      v-model="localGroup.questionary.starter"
+                      :name="localGroup.id + '-starter'"
+                      type="radio"
+                      :value="true"
+                    />
+                  </div>
+                  <div>
+                    <label :for="localGroup.id + 'starter-no'"> Nein </label>
+                    <input
+                      :id="localGroup.id + '-starter-no'"
+                      v-model="localGroup.questionary.starter"
+                      :name="localGroup.id + '-starter'"
+                      type="radio"
+                      :value="false"
+                    />
+                  </div>
+                </div>
+              </form>
               <h3 class="text-xl">Delis:</h3>
               <ul>
                 <li
@@ -126,6 +221,14 @@ class LocalGroup {
   id: string
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
+  questionary = {
+    streik: null,
+    'why-not': '',
+    orga: null,
+    technik: null,
+    mobi: null,
+    starter: null,
+  }
 
   axios: NuxtAxiosInstance
 
