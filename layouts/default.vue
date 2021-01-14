@@ -2,20 +2,26 @@
   <div class="flex flex-col h-max-inner justify-between">
     <Nuxt />
     <footer v-if="$auth.loggedIn">
-      <nav class="h-full">
-        <ul
-          class="flex justify-around border-t-2 border-primary text-primary h-full"
-        >
-          <li class="flex flex-col justify-center items-center w-6/12">
-            <NuxtLink class="w-full flex justify-center items-center" to="/">
+      <nav id="bottom-nav">
+        <ul>
+          <li>
+            <NuxtLink
+              class="flex-grow w-full flex justify-center items-center"
+              to="/"
+            >
               <font-awesome-icon icon="home" />
             </NuxtLink>
           </li>
-          <li class="flex flex-col justify-center items-center w-6/12">
+          <li>
             <NuxtLink
               class="w-full flex justify-center items-center"
-              to="/profile"
+              to="/buddies"
             >
+              <font-awesome-icon icon="user-friends" />
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="/profile">
               <font-awesome-icon icon="user" />
             </NuxtLink>
           </li>
@@ -26,6 +32,18 @@
 </template>
 
 <style>
+#bottom-nav {
+  @apply h-full;
+}
+#bottom-nav > ul {
+  @apply flex justify-around border-t-2 border-primary text-primary h-full;
+}
+#bottom-nav > ul > li {
+  @apply flex flex-col justify-center items-center flex-grow;
+}
+#bottom-nav > ul > li > a {
+  @apply w-full flex justify-center items-center;
+}
 header,
 footer {
   height: 50px;

@@ -40,6 +40,7 @@ export default {
         'faEdit',
         'faHome',
         'faUser',
+        'faUserFriends',
         'faSave',
         'faTimes',
       ],
