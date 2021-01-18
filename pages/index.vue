@@ -7,7 +7,7 @@
         Meine Ortsgruppen
       </h1>
     </header>
-    <main class="overflow-scroll">
+    <main class="overflow-scroll flex flex-col">
       <ul class="flex flex-col m-2 shadow-2xl">
         <li
           v-for="(localGroup, i) of localGroups"
@@ -22,9 +22,7 @@
         >
           <details class="list-style-none w-full p-1">
             <summary class="list-style-none text-center">
-              <h2 class="text-2xl">
-                {{ localGroup.name }}
-              </h2>
+              <h2 class="text-2xl">{{ localGroup.name }}</h2>
             </summary>
             <div
               class="border-t-2 flex flex-col justify-center md:flex-row md:justify-around md:flex-wrap min-w-md"
@@ -32,9 +30,9 @@
               <section>
                 <h3 class="text-xl">Fragen:</h3>
                 <form class="flex flex-col">
-                  <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
-                    Hat die OG vor am 18.03 zu streiken?
-                  </label>
+                  <label :for="localGroup.id + '-streik'" class="mt-5 mb-3"
+                    >Hat die OG vor am 18.03 zu streiken?</label
+                  >
                   <select
                     :id="localGroup.id + '-streik'"
                     v-model="localGroup.questionary.streik"
@@ -46,18 +44,17 @@
                     <option value="3">Wahrscheinlich schon</option>
                     <option value="4">Sicher</option>
                   </select>
-                  <label :for="localGroup.id + '-why-not'" class="mb-3">
-                    Warum nicht?
-                  </label>
+                  <label :for="localGroup.id + '-why-not'" class="mb-3"
+                    >Warum nicht?</label
+                  >
                   <textarea
                     :id="localGroup.id + '-why-not'"
                     v-model="localGroup.questionary['why-not']"
                     class="mb-5"
+                  ></textarea>
+                  <label :for="localGroup.id + '-orga'" class="mb-3"
+                    >Habt ihr genug Menschen für die Orga?</label
                   >
-                  </textarea>
-                  <label :for="localGroup.id + '-orga'" class="mb-3">
-                    Habt ihr genug Menschen für die Orga?
-                  </label>
                   <select
                     :id="localGroup.id + '-orga'"
                     v-model="localGroup.questionary.orga"
@@ -69,9 +66,9 @@
                     <option value="3">Genau richtig</option>
                     <option value="4">Fast zu viele</option>
                   </select>
-                  <label :for="localGroup.id + '-technik'" class="mb-3">
-                    Habt ihr genug Technik?
-                  </label>
+                  <label :for="localGroup.id + '-technik'" class="mb-3"
+                    >Habt ihr genug Technik?</label
+                  >
                   <select
                     :id="localGroup.id + '-technik'"
                     v-model="localGroup.questionary.technik"
@@ -83,9 +80,9 @@
                     <option value="3">Genau richtig</option>
                     <option value="4">Fast zu viel</option>
                   </select>
-                  <label :for="localGroup.id + '-mobi'" class="mb-3">
-                    Hat die OG schon Mobimaterial bestellt?
-                  </label>
+                  <label :for="localGroup.id + '-mobi'" class="mb-3"
+                    >Hat die OG schon Mobimaterial bestellt?</label
+                  >
                   <select
                     :id="localGroup.id + '-mobi'"
                     v-model="localGroup.questionary.mobi"
@@ -96,15 +93,15 @@
                     <option value="2">Nein, aber will sie noch</option>
                     <option value="3">Ja</option>
                   </select>
-                  <label :for="localGroup.id + '-starter'" class="mb-3">
-                    Habt ihr alle Sachen aus den Starterpacks?
-                  </label>
+                  <label :for="localGroup.id + '-starter'" class="mb-3"
+                    >Habt ihr alle Sachen aus den Starterpacks?</label
+                  >
                   <div
                     id="localGroup.id + '-starter'"
                     class="mb-5 flex justify-around"
                   >
                     <div>
-                      <label :for="localGroup.id + 'starter-yes'"> Ja </label>
+                      <label :for="localGroup.id + 'starter-yes'">Ja</label>
                       <input
                         :id="localGroup.id + '-starter-yes'"
                         v-model="localGroup.questionary.starter"
@@ -114,7 +111,7 @@
                       />
                     </div>
                     <div>
-                      <label :for="localGroup.id + 'starter-no'"> Nein </label>
+                      <label :for="localGroup.id + 'starter-no'">Nein</label>
                       <input
                         :id="localGroup.id + '-starter-no'"
                         v-model="localGroup.questionary.starter"
@@ -158,7 +155,7 @@
                   @submit.prevent="localGroup.saveNewDeli($axios)"
                 >
                   <div class="flex justify-between">
-                    <label class="my-1"> Name: </label>
+                    <label class="my-1">Name:</label>
                     <input
                       v-model="localGroup.newDeli.name"
                       class="my-1"
@@ -167,7 +164,7 @@
                     />
                   </div>
                   <div class="flex justify-between">
-                    <label class="my-1 w-5"> Nummer: </label>
+                    <label class="my-1 w-5">Nummer:</label>
                     <input
                       v-model="localGroup.newDeli.phone"
                       class="my-1"
@@ -213,6 +210,53 @@
           </details>
         </li>
       </ul>
+      <button
+        v-if="!editingNewGroup"
+        class="self-center my-5 text-xl"
+        @click="editingNewGroup = true"
+      >
+        Neue Ortsgruppe
+      </button>
+      <form
+        v-else
+        class="self-center flex flex-col"
+        @reset="
+          {
+            editingNewGroup = false
+            newLocalGroup = { name: '', federalState: null }
+          }
+        "
+        @submit.prevent="createNewGroup()"
+      >
+        <div class="mt-5 flex justify-between items-center">
+          <label class="mr-3">Name:</label>
+          <input v-model="newLocalGroup.name" required />
+        </div>
+        <div class="my-5 flex justify-between items-center">
+          <label class="mr-3">Bundesland:</label>
+          <select v-model="newLocalGroup.federalState" required>
+            <option disabled selected :value="null">–</option>
+            <option value>Stadtstaat</option>
+            <option value="BW">Baden-Württemberg</option>
+            <option value="BY">Bayern</option>
+            <option value="BB">Brandenburg</option>
+            <option value="HE">Hessen</option>
+            <option value="MV">Mecklenburg-Vorpommern</option>
+            <option value="NI">Niedersachsen</option>
+            <option value="NW">Nordrhein-Westfalen</option>
+            <option value="RP">Rheinland-Pfalz</option>
+            <option value="SL">Saarland</option>
+            <option value="SN">Sachsen</option>
+            <option value="ST">Sachsen-Anhalt</option>
+            <option value="SH">Schleswig-Holstein</option>
+            <option value="TH">Thüringen</option>
+          </select>
+        </div>
+        <div class="flex justify-around max-w-md">
+          <button type="reset" class="w-24">Abbrechen</button>
+          <button type="submit" class="w-24">Speichern</button>
+        </div>
+      </form>
     </main>
   </div>
 </template>
@@ -361,6 +405,9 @@ export default class IndexView extends Vue {
 
   localGroups: any = []
 
+  editingNewGroup = false
+  newLocalGroup = { name: '', federalState: null }
+
   $axios: any
 
   created() {
@@ -369,6 +416,12 @@ export default class IndexView extends Vue {
         (localGroup: any) => new LocalGroup(localGroup, this.$axios)
       )
     })
+  }
+
+  createNewGroup() {
+    this.$axios
+      .post('localGroups', this.newLocalGroup)
+      .then(() => (this.editingNewGroup = false))
   }
 }
 </script>
