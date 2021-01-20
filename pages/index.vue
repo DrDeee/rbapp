@@ -255,7 +255,7 @@
           @reset="
             {
               editingNewGroup = false
-              newLocalGroup = { name: '', federalState: null }
+              newLocalGroup = { name: '', state: null }
             }
           "
           @submit.prevent="createNewGroup()"
@@ -266,22 +266,22 @@
           </div>
           <div class="my-5 flex justify-between items-center">
             <label class="mr-3">Bundesland:</label>
-            <select v-model="newLocalGroup.federalState" required>
+            <select v-model="newLocalGroup.state" required>
               <option disabled selected :value="null">–</option>
               <option value>Stadtstaat</option>
-              <option value="BW">Baden-Württemberg</option>
-              <option value="BY">Bayern</option>
-              <option value="BB">Brandenburg</option>
-              <option value="HE">Hessen</option>
-              <option value="MV">Mecklenburg-Vorpommern</option>
-              <option value="NI">Niedersachsen</option>
-              <option value="NW">Nordrhein-Westfalen</option>
-              <option value="RP">Rheinland-Pfalz</option>
-              <option value="SL">Saarland</option>
-              <option value="SN">Sachsen</option>
-              <option value="ST">Sachsen-Anhalt</option>
-              <option value="SH">Schleswig-Holstein</option>
-              <option value="TH">Thüringen</option>
+              <option value="bw">Baden-Württemberg</option>
+              <option value="by">Bayern</option>
+              <option value="bb">Brandenburg</option>
+              <option value="he">Hessen</option>
+              <option value="mv">Mecklenburg-Vorpommern</option>
+              <option value="ni">Niedersachsen</option>
+              <option value="nw">Nordrhein-Westfalen</option>
+              <option value="rp">Rheinland-Pfalz</option>
+              <option value="sl">Saarland</option>
+              <option value="sn">Sachsen</option>
+              <option value="st">Sachsen-Anhalt</option>
+              <option value="sh">Schleswig-Holstein</option>
+              <option value="th">Thüringen</option>
             </select>
           </div>
           <div class="flex justify-around max-w-md">
@@ -463,7 +463,7 @@ export default class IndexView extends Vue {
   buddies: any = []
 
   editingNewGroup = false
-  newLocalGroup = { name: '', federalState: null }
+  newLocalGroup = { name: '', state: null }
 
   $axios: any
 
