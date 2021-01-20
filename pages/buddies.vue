@@ -22,7 +22,7 @@
               {{ buddy.cloudUsername }}
             </span>
           </div>
-          <div class="flex justify-around w-full mb-3">
+          <div v-if="isAdmin()" class="flex justify-around w-full mb-3">
             <button @click="buddyToDelete = buddy">Löschen</button>
             <button>Bearbeiten</button>
           </div>
@@ -57,29 +57,31 @@
           </div>
         </div>
       </div>
-      <button v-if="!adding" class="mx-auto mt-5" @click="adding = true">
-        Buddy hinzufügen
-      </button>
-      <form
-        v-else
-        class="flex flex-col mx-3"
-        @reset="adding = false"
-        @submit.prevent="addBuddy()"
-      >
-        <h2 class="text-center text-xl font-book">Buddy hinzufügen</h2>
-        <div class="flex mt-3">
-          <label for="name" class="w-24"> Name: </label>
-          <input v-model="newBuddy.name" required />
-        </div>
-        <div class="flex my-3">
-          <label for="username" class="w-24"> Username: </label>
-          <input id="username" v-model="newBuddy.cloudUsername" required />
-        </div>
-        <div class="flex justify-around">
-          <input type="reset" value="Abbrechen" />
-          <input type="submit" value="Speichern" />
-        </div>
-      </form>
+      <div v-if="isAdmin()">
+        <button v-if="!adding" class="mx-auto mt-5" @click="adding = true">
+          Buddy hinzufügen
+        </button>
+        <form
+          v-else
+          class="flex flex-col mx-3"
+          @reset="adding = false"
+          @submit.prevent="addBuddy()"
+        >
+          <h2 class="text-center text-xl font-book">Buddy hinzufügen</h2>
+          <div class="flex mt-3">
+            <label for="name" class="w-24"> Name: </label>
+            <input v-model="newBuddy.name" required />
+          </div>
+          <div class="flex my-3">
+            <label for="username" class="w-24"> Username: </label>
+            <input id="username" v-model="newBuddy.cloudUsername" required />
+          </div>
+          <div class="flex justify-around">
+            <input type="reset" value="Abbrechen" />
+            <input type="submit" value="Speichern" />
+          </div>
+        </form>
+      </div>
     </main>
   </div>
 </template>
@@ -124,6 +126,11 @@ export default class IndexView extends Vue {
       this.buddies.splice(index, 1)
       this.buddyToDelete = null
     })
+  }
+
+  isAdmin() {
+    const user = this.$auth.user as any
+    return user.groups?.includes('/OG Amrum')
   }
 }
 </script>

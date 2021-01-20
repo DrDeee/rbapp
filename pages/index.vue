@@ -203,7 +203,7 @@
                   </div>
                 </form>
               </section>
-              <section>
+              <section v-if="localGroup.exRepresentatives.length > 0">
                 <h3 class="text-xl">Ex-Delis:</h3>
                 <ul>
                   <li
@@ -220,7 +220,7 @@
                   </li>
                 </ul>
               </section>
-              <section>
+              <section v-if="$isAdmin()">
                 <h3 class="text-xl">Buddy:</h3>
                 <!-- the @change could prob be replaced with a watcher -->
                 <select
@@ -241,53 +241,55 @@
           </details>
         </li>
       </ul>
-      <button
-        v-if="!editingNewGroup"
-        class="self-center my-5 text-xl"
-        @click="editingNewGroup = true"
-      >
-        Neue Ortsgruppe
-      </button>
-      <form
-        v-else
-        class="self-center flex flex-col"
-        @reset="
-          {
-            editingNewGroup = false
-            newLocalGroup = { name: '', federalState: null }
-          }
-        "
-        @submit.prevent="createNewGroup()"
-      >
-        <div class="mt-5 flex justify-between items-center">
-          <label class="mr-3">Name:</label>
-          <input v-model="newLocalGroup.name" required />
-        </div>
-        <div class="my-5 flex justify-between items-center">
-          <label class="mr-3">Bundesland:</label>
-          <select v-model="newLocalGroup.federalState" required>
-            <option disabled selected :value="null">–</option>
-            <option value>Stadtstaat</option>
-            <option value="BW">Baden-Württemberg</option>
-            <option value="BY">Bayern</option>
-            <option value="BB">Brandenburg</option>
-            <option value="HE">Hessen</option>
-            <option value="MV">Mecklenburg-Vorpommern</option>
-            <option value="NI">Niedersachsen</option>
-            <option value="NW">Nordrhein-Westfalen</option>
-            <option value="RP">Rheinland-Pfalz</option>
-            <option value="SL">Saarland</option>
-            <option value="SN">Sachsen</option>
-            <option value="ST">Sachsen-Anhalt</option>
-            <option value="SH">Schleswig-Holstein</option>
-            <option value="TH">Thüringen</option>
-          </select>
-        </div>
-        <div class="flex justify-around max-w-md">
-          <button type="reset" class="w-24">Abbrechen</button>
-          <button type="submit" class="w-24">Speichern</button>
-        </div>
-      </form>
+      <div v-if="$isAdmin()" class="self-center">
+        <button
+          v-if="!editingNewGroup"
+          class="my-5 text-xl"
+          @click="editingNewGroup = true"
+        >
+          Neue Ortsgruppe
+        </button>
+        <form
+          v-else
+          class="self-center flex flex-col"
+          @reset="
+            {
+              editingNewGroup = false
+              newLocalGroup = { name: '', federalState: null }
+            }
+          "
+          @submit.prevent="createNewGroup()"
+        >
+          <div class="mt-5 flex justify-between items-center">
+            <label class="mr-3">Name:</label>
+            <input v-model="newLocalGroup.name" required />
+          </div>
+          <div class="my-5 flex justify-between items-center">
+            <label class="mr-3">Bundesland:</label>
+            <select v-model="newLocalGroup.federalState" required>
+              <option disabled selected :value="null">–</option>
+              <option value>Stadtstaat</option>
+              <option value="BW">Baden-Württemberg</option>
+              <option value="BY">Bayern</option>
+              <option value="BB">Brandenburg</option>
+              <option value="HE">Hessen</option>
+              <option value="MV">Mecklenburg-Vorpommern</option>
+              <option value="NI">Niedersachsen</option>
+              <option value="NW">Nordrhein-Westfalen</option>
+              <option value="RP">Rheinland-Pfalz</option>
+              <option value="SL">Saarland</option>
+              <option value="SN">Sachsen</option>
+              <option value="ST">Sachsen-Anhalt</option>
+              <option value="SH">Schleswig-Holstein</option>
+              <option value="TH">Thüringen</option>
+            </select>
+          </div>
+          <div class="flex justify-around max-w-md">
+            <button type="reset" class="w-24">Abbrechen</button>
+            <button type="submit" class="w-24">Speichern</button>
+          </div>
+        </form>
+      </div>
     </main>
   </div>
 </template>
@@ -480,6 +482,11 @@ export default class IndexView extends Vue {
     this.$axios
       .post('localGroups', this.newLocalGroup)
       .then(() => (this.editingNewGroup = false))
+  }
+
+  isAdmin() {
+    const user = this.$auth.user as any
+    return user.groups?.includes('/OG Amrum')
   }
 }
 </script>

@@ -12,7 +12,7 @@
               <font-awesome-icon icon="home" />
             </NuxtLink>
           </li>
-          <li>
+          <li v-if="$isAdmin()">
             <NuxtLink
               class="w-full flex justify-center items-center"
               to="/buddies"

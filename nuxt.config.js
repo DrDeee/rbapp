@@ -84,6 +84,7 @@ export default {
         codeChallengeMethod: 'plain',
       },
     },
+    plugins: ['~/plugins/is-admin.ts'],
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
