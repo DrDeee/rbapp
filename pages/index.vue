@@ -322,11 +322,9 @@ class LocalGroup {
     // eslint-disable-next-line no-unused-expressions
     this.questionaryCancelToken?.cancel()
     this.questionaryCancelToken = this.axios.CancelToken.source()
-    this.axios
-      .post(`/localGroups/${this.id}/questionary`, this.questionary, {
-        cancelToken: this.questionaryCancelToken.token,
-      })
-      .catch(console.log)
+    return this.axios.post(`/polls/${this.id}/`, this.questionary, {
+      cancelToken: this.questionaryCancelToken.token,
+    })
   }
 
   constructor(data: any, axios: NuxtAxiosInstance) {
