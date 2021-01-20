@@ -11,7 +11,7 @@
       <ul class="flex flex-col m-2 shadow-2xl">
         <li
           v-for="(localGroup, i) of localGroups"
-          :key="localGroup.name"
+          :key="localGroup.id"
           class="border border-t-gray-600 w-full flex justify-center"
           :class="{
             'bg-green-600': localGroup.finished,
@@ -29,25 +29,39 @@
             >
               <section>
                 <h3 class="text-xl">Fragen:</h3>
-                <form class="flex flex-col">
-                  <label :for="localGroup.id + '-streik'" class="mt-5 mb-3"
-                    >Hat die OG vor am 18.03 zu streiken?</label
-                  >
+                <form
+                  class="flex flex-col"
+                  @change="localGroup.sendQuestionary()"
+                >
+                  <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
+                    Hat die OG vor am 18.03 zu streiken?
+                  </label>
                   <select
                     :id="localGroup.id + '-streik'"
                     v-model="localGroup.questionary.streik"
                     class="mb-5"
                   >
                     <option :value="null">-</option>
-                    <option value="1">Sicher nicht</option>
-                    <option value="2">Wahrscheinlich nicht</option>
-                    <option value="3">Wahrscheinlich schon</option>
-                    <option value="4">Sicher</option>
+                    <option :value="1">Sicher nicht</option>
+                    <option :value="2">Wahrscheinlich nicht</option>
+                    <option :value="3">Wahrscheinlich schon</option>
+                    <option :value="4">Sicher</option>
                   </select>
-                  <label :for="localGroup.id + '-why-not'" class="mb-3"
-                    >Warum nicht?</label
+                  <label
+                    v-if="
+                      localGroup.questionary.streik &&
+                      localGroup.questionary.streik !== 4
+                    "
+                    :for="localGroup.id + '-why-not'"
+                    class="mb-3"
                   >
+                    Warum nicht?
+                  </label>
                   <textarea
+                    v-if="
+                      localGroup.questionary.streik &&
+                      localGroup.questionary.streik !== 4
+                    "
                     :id="localGroup.id + '-why-not'"
                     v-model="localGroup.questionary['why-not']"
                     class="mb-5"
@@ -206,6 +220,23 @@
                   </li>
                 </ul>
               </section>
+              <section>
+                <h3 class="text-xl">Buddy:</h3>
+                <!-- the @change could prob be replaced with a watcher -->
+                <select
+                  v-model="localGroup.buddy"
+                  @change="localGroup.setBuddy()"
+                >
+                  <option :value="null">-</option>
+                  <option
+                    v-for="buddy of buddies"
+                    :key="buddy.id"
+                    :value="buddy.id"
+                  >
+                    {{ `${buddy.name} (${buddy.cloudUsername})` }}
+                  </option>
+                </select>
+              </section>
             </div>
           </details>
         </li>
@@ -264,6 +295,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
+import { CancelTokenSource } from 'axios'
 import RepresentativeComponent from '@/components/Representative.vue'
 
 class LocalGroup {
@@ -273,6 +305,7 @@ class LocalGroup {
   id: string
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
+  buddy: any = null
   questionary = {
     streik: null,
     'why-not': '',
@@ -283,9 +316,22 @@ class LocalGroup {
   }
 
   axios: NuxtAxiosInstance
+  questionaryCancelToken: CancelTokenSource | null = null
+
+  sendQuestionary() {
+    // eslint-disable-next-line no-unused-expressions
+    this.questionaryCancelToken?.cancel()
+    this.questionaryCancelToken = this.axios.CancelToken.source()
+    this.axios
+      .post(`/localGroups/${this.id}/questionary`, this.questionary, {
+        cancelToken: this.questionaryCancelToken.token,
+      })
+      .catch(console.log)
+  }
 
   constructor(data: any, axios: NuxtAxiosInstance) {
     this.axios = axios
+    this.questionaryCancelToken = axios.CancelToken.source()
     this.representatives = data.representatives.map(
       (rep: any) => new Representative(rep, axios)
     )
@@ -294,6 +340,8 @@ class LocalGroup {
     )
     this.name = data.name
     this.id = data.id
+    // data.buddy is sometimes undefined, but we just want null
+    this.buddy = data.buddy || null
   }
 
   async removeRep(rep: Representative) {
@@ -334,6 +382,14 @@ class LocalGroup {
       )
     )
     this.cancelNewDeli()
+  }
+
+  setBuddy() {
+    if (this.buddy) {
+      return this.axios.put(`localGroups/${this.id}/buddy/${this.buddy}`)
+    } else {
+      return this.axios.delete(`localGroups/${this.id}/buddy/`)
+    }
   }
 }
 
@@ -404,6 +460,7 @@ export default class IndexView extends Vue {
   openMenu: null | HTMLElement = null
 
   localGroups: any = []
+  buddies: any = []
 
   editingNewGroup = false
   newLocalGroup = { name: '', federalState: null }
@@ -411,10 +468,13 @@ export default class IndexView extends Vue {
   $axios: any
 
   created() {
-    this.$axios.get('localGroups').then((response: any) => {
-      this.localGroups = response.data.map(
+    this.$axios.$get('localGroups').then((data: any) => {
+      this.localGroups = data.map(
         (localGroup: any) => new LocalGroup(localGroup, this.$axios)
       )
+    })
+    this.$axios.$get('buddies').then((data: any) => {
+      this.buddies = data
     })
   }
 
