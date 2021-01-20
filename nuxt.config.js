@@ -60,6 +60,9 @@ export default {
   pwa: {
     manifest: {
       name: 'Regio-Buddy',
+      short_name: 'Regio-Buddy',
+      description:
+        'Diese App ermöglicht es dir Regio-Buddy für Fridays for Future zu sein und mit uns Klimastreiks zu organisieren',
       lang: 'de',
       theme_color: '#1B7340',
     },
