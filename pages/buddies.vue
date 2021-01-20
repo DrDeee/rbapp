@@ -120,7 +120,7 @@ export default class IndexView extends Vue {
 
   deleteBuddy(buddy: any) {
     return this.$axios.delete(`buddies/${buddy.id}`).then(() => {
-      const index = this.buddies.find(({ id }) => id === buddy.id)
+      const index = this.buddies.findIndex(({ id }) => id === buddy.id)
       this.buddies.splice(index, 1)
       this.buddyToDelete = null
     })
