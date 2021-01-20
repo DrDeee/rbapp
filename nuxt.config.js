@@ -29,6 +29,8 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
     '@nuxtjs/fontawesome',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/pwa',
   ],
 
   fontawesome: {
@@ -52,10 +54,16 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
     '@nuxtjs/auth-next',
   ],
+
+  pwa: {
+    manifest: {
+      name: 'Regio-Buddy',
+      lang: 'de',
+      theme_color: '#1B7340',
+    },
+  },
 
   router: {
     middleware: ['auth'],
