@@ -246,7 +246,7 @@
         <div v-if="$isAdmin()" class="self-center">
           <button
             v-if="!editingNewGroup"
-            class="my-5 text-xl"
+            class="my-5 text-xl relative"
             @click="editingNewGroup = true"
           >
             Neue Ortsgruppe
