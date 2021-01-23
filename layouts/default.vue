@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-max-inner justify-between">
-    <Nuxt />
+    <Nuxt id="header-and-main" />
     <footer v-if="$auth.loggedIn">
       <nav id="bottom-nav">
         <ul>
@@ -49,8 +49,11 @@ footer {
   height: 50px;
   @apply bg-white;
 }
+#header-and-main {
+  height: calc(var(--inner-height) - 50px);
+}
 main {
-  height: calc(var(--inner-height) - 100px);
+  height: calc(100% - 50px);
 }
 .nuxt-link-exact-active {
   @apply text-secondary;
