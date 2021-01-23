@@ -5,18 +5,12 @@
       <nav id="bottom-nav">
         <ul>
           <li>
-            <NuxtLink
-              class="flex-grow w-full flex justify-center items-center"
-              to="/"
-            >
+            <NuxtLink to="/">
               <font-awesome-icon icon="home" />
             </NuxtLink>
           </li>
           <li v-if="$isAdmin()">
-            <NuxtLink
-              class="w-full flex justify-center items-center"
-              to="/buddies"
-            >
+            <NuxtLink to="/buddies">
               <font-awesome-icon icon="user-friends" />
             </NuxtLink>
           </li>
@@ -41,8 +35,8 @@
 #bottom-nav > ul > li {
   @apply flex flex-col justify-center items-center flex-grow;
 }
-#bottom-nav > ul > li > a {
-  @apply w-full flex justify-center items-center;
+#bottom-nav > ul > li > * {
+  @apply w-full flex justify-center items-center h-full;
 }
 header,
 footer {
