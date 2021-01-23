@@ -7,10 +7,10 @@
         Meine Ortsgruppen
       </h1>
     </header>
-    <main class="overflow-scroll flex flex-col">
+    <main class="overflow-scroll flex flex-col min-h-min-content">
       <ul class="flex flex-col m-2 shadow-2xl">
         <li
-          v-for="(localGroup, i) of localGroupsFiltered"
+          v-for="(localGroup, i) of localGroupsFiltered.slice(0, 12)"
           :key="localGroup.id"
           class="border border-t-gray-600 w-full flex justify-center"
           :class="{
