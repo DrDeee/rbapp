@@ -7,24 +7,37 @@
         Meine Buddies
       </h1>
     </header>
-    <main class="overflow-scroll">
-      <ul class="flex flex-col m-2 p-2 shadow-2xl flex-grow">
+    <main class="overflow-scroll p-2 flex flex-col justify-center">
+      <ul class="flex flex-col p-2">
         <li
           v-for="buddy of buddies"
           :key="buddy.id"
-          class="my-2 border border-t-gray-600 w-full flex flex-col justify-around"
+          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto"
         >
-          <div class="flex justify-around w-full my-3">
-            <span>
+          <div
+            class="flex flex-col justify-around w-full my-3 sm:max-w-sm md:max-w-full lg:flex-row lg:justify-start lg:items-center"
+          >
+            <div class="flex justify-between lg:justify-start px-2 lg:w-64">
+              <label class="w-32 lg:w-auto lg:mr-3 font-semibold">
+                Name:
+              </label>
               {{ buddy.name }}
-            </span>
-            <span>
+            </div>
+            <div class="flex justify-between px-2">
+              <label class="w-32 lg:mr-3 font-semibold">
+                Cloud-Username:
+              </label>
               {{ buddy.cloudUsername }}
-            </span>
+            </div>
           </div>
-          <div v-if="isAdmin()" class="flex justify-around w-full mb-3">
-            <button @click="buddyToDelete = buddy">Löschen</button>
-            <button>Bearbeiten</button>
+          <div
+            v-if="isAdmin()"
+            class="flex sm:items-center justify-around w-full mb-3 sm:mb-0 sm:max-w-sm"
+          >
+            <button class="w-32 py-1 sm:my-3">Bearbeiten</button>
+            <button class="w-32 py-1 sm:my-3" @click="buddyToDelete = buddy">
+              Löschen
+            </button>
           </div>
         </li>
       </ul>
@@ -57,26 +70,30 @@
           </div>
         </div>
       </div>
-      <div v-if="isAdmin()">
-        <button v-if="!adding" class="mx-auto mt-5" @click="adding = true">
+      <div v-if="isAdmin()" class="w-auto mt-5">
+        <button
+          v-if="!adding"
+          class="mx-auto shadow-2xl px-4 py-1"
+          @click="adding = true"
+        >
           Buddy hinzufügen
         </button>
         <form
           v-else
-          class="flex flex-col mx-3"
+          class="flex flex-col mx-3 mx-auto max-w-sm bg-white rounded-lg shadow-2xl p-2"
           @reset="adding = false"
           @submit.prevent="addBuddy()"
         >
-          <h2 class="text-center text-xl font-book">Buddy hinzufügen</h2>
-          <div class="flex mt-3">
+          <h2 class="text-center text-xl font-book mb-3">Buddy hinzufügen</h2>
+          <div class="flex justify-between my-1">
             <label for="name" class="w-24"> Name: </label>
             <input v-model="newBuddy.name" required />
           </div>
-          <div class="flex my-3">
+          <div class="flex justify-between my-1">
             <label for="username" class="w-24"> Username: </label>
             <input id="username" v-model="newBuddy.cloudUsername" required />
           </div>
-          <div class="flex justify-around">
+          <div class="flex justify-around mt-3">
             <input type="reset" value="Abbrechen" />
             <input type="submit" value="Speichern" />
           </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full" @click="openMenu = null">
+  <div class="h-full" @click=";(openMenu = null) && alert('test')">
     <header class="border-b-2 border-primary">
       <h1 class="text-3xl text-center font-bold mt-1 w-full">
         Meine Ortsgruppen
@@ -9,7 +9,7 @@
       <div class="flex flex-col h-full">
         <ul class="flex-grow m-2 shadow-2xl overflow-y-scroll">
           <li
-            v-for="(localGroup, i) of localGroupsFiltered.slice(1, 300)"
+            v-for="(localGroup, i) of localGroupsFiltered"
             :key="localGroup.id"
             class="border border-t-gray-600 w-full flex justify-center"
             :class="{
@@ -225,8 +225,8 @@
                   <h3 class="text-xl">Buddy:</h3>
                   <!-- the @change could prob be replaced with a watcher -->
                   <select
-                    class="mx-auto block"
                     v-model="localGroup.buddy"
+                    class="mx-auto block"
                     @change="localGroup.setBuddy()"
                   >
                     <option :value="null">-</option>
@@ -509,6 +509,10 @@ export default class IndexView extends Vue {
   isAdmin() {
     const user = this.$auth.user as any
     return user.groups?.includes('/OG Amrum')
+  }
+
+  handleClick() {
+    alert('test')
   }
 }
 </script>
