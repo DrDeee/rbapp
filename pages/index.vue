@@ -9,7 +9,7 @@
       <div class="overflow-scroll flex flex-col">
         <ul class="flex flex-col m-2 shadow-2xl">
           <li
-            v-for="(localGroup, i) of localGroupsFiltered.slice(0, 12)"
+            v-for="(localGroup, i) of localGroupsFiltered"
             :key="localGroup.id"
             class="border border-t-gray-600 w-full flex justify-center"
             :class="{
