@@ -136,7 +136,7 @@
                   </div>
                 </form>
               </section>
-              <section class="flex flex-col">
+              <section class="flex flex-col relative">
                 <h3 class="text-xl">Delis:</h3>
                 <ul>
                   <li
@@ -202,7 +202,10 @@
                   </div>
                 </form>
               </section>
-              <section v-if="localGroup.exRepresentatives.length > 0">
+              <section
+                v-if="localGroup.exRepresentatives.length > 0"
+                class="relative"
+              >
                 <h3 class="text-xl">Ex-Delis:</h3>
                 <ul>
                   <li
@@ -341,6 +344,14 @@ class LocalGroup {
     await this.axios.delete(`/localGroups/${this.id}/representatives/${rep.id}`)
     const index = this.representatives.findIndex((r) => r === rep)
     this.representatives.splice(index, 1)
+  }
+
+  async removeExRep(exRep: Representative) {
+    await this.axios.delete(
+      `/localGroups/${this.id}/exRepresentatives/${exRep.id}`
+    )
+    const index = this.exRepresentatives.findIndex((r) => r === exRep)
+    this.exRepresentatives.splice(index, 1)
   }
 
   async makeCurrent(rep: Representative) {
