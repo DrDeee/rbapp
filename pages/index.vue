@@ -491,6 +491,7 @@ export default class IndexView extends Vue {
     this.$axios
       .post('localGroups', this.newLocalGroup)
       .then(() => (this.editingNewGroup = false))
+    this.newLocalGroup = { name: '', state: null }
   }
 
   isAdmin() {
