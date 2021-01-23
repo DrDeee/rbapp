@@ -5,8 +5,8 @@
         Meine Ortsgruppen
       </h1>
     </header>
-    <main class="overflow-scroll">
-      <div class="overflow-scroll flex flex-col">
+    <main>
+      <div class="overflow-y-scroll flex flex-col">
         <ul class="flex flex-col m-2 shadow-2xl">
           <li
             v-for="(localGroup, i) of localGroupsFiltered"
