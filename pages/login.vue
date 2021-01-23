@@ -6,6 +6,7 @@
     <button class="p-1 px-2 max-w-sm m-5" @click="$auth.loginWith('cloud')">
       Mit Cloud-Account einloggen
     </button>
+    <img src="~/assets/greata.jpeg" />
   </main>
 </template>
 
