@@ -225,6 +225,7 @@
                   <h3 class="text-xl">Buddy:</h3>
                   <!-- the @change could prob be replaced with a watcher -->
                   <select
+                    class="mx-auto block"
                     v-model="localGroup.buddy"
                     @change="localGroup.setBuddy()"
                   >
