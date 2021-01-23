@@ -269,10 +269,12 @@
               <label class="mr-3">Bundesland:</label>
               <select v-model="newLocalGroup.state" required>
                 <option disabled selected :value="null">–</option>
-                <option value>Stadtstaat</option>
                 <option value="bw">Baden-Württemberg</option>
-                <option value="by">Bayern</option>
+                <option value="be">Berlin</option>
                 <option value="bb">Brandenburg</option>
+                <option value="hb">Bremen</option>
+                <option value="by">Bayern</option>
+                <option value="hh">Hamburg</option>
                 <option value="he">Hessen</option>
                 <option value="mv">Mecklenburg-Vorpommern</option>
                 <option value="ni">Niedersachsen</option>
