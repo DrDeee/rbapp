@@ -66,5 +66,11 @@ html {
 html,
 body {
   height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+}
+body {
+  overscroll-behavior-y: none;
 }
 </style>
