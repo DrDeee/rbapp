@@ -30,15 +30,16 @@
               <section>
                 <h3 class="text-xl">Fragen:</h3>
                 <form
+                  v-if="localGroup.poll"
                   class="flex flex-col"
-                  @change="localGroup.sendQuestionary()"
+                  @change="localGroup.sendPoll()"
                 >
                   <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
                     Hat die OG vor am 18.03 zu streiken?
                   </label>
                   <select
                     :id="localGroup.id + '-streik'"
-                    v-model="localGroup.questionary.streik"
+                    v-model="localGroup.poll.strike"
                     class="mb-5"
                   >
                     <option :value="null">-</option>
@@ -49,8 +50,7 @@
                   </select>
                   <label
                     v-if="
-                      localGroup.questionary.streik &&
-                      localGroup.questionary.streik !== 4
+                      localGroup.poll.streik && localGroup.poll.streik !== 4
                     "
                     :for="localGroup.id + '-why-not'"
                     class="mb-3"
@@ -59,11 +59,10 @@
                   </label>
                   <textarea
                     v-if="
-                      localGroup.questionary.streik &&
-                      localGroup.questionary.streik !== 4
+                      localGroup.poll.streik && localGroup.poll.streik !== 4
                     "
                     :id="localGroup.id + '-why-not'"
-                    v-model="localGroup.questionary['why-not']"
+                    v-model="localGroup.poll.whyNot"
                     class="mb-5"
                   ></textarea>
                   <label :for="localGroup.id + '-orga'" class="mb-3"
@@ -71,7 +70,7 @@
                   >
                   <select
                     :id="localGroup.id + '-orga'"
-                    v-model="localGroup.questionary.orga"
+                    v-model="localGroup.poll.people"
                     class="mb-5"
                   >
                     <option :value="null">-</option>
@@ -85,7 +84,7 @@
                   >
                   <select
                     :id="localGroup.id + '-technik'"
-                    v-model="localGroup.questionary.technik"
+                    v-model="localGroup.poll.equipment"
                     class="mb-5"
                   >
                     <option :value="null">-</option>
@@ -99,7 +98,7 @@
                   >
                   <select
                     :id="localGroup.id + '-mobi'"
-                    v-model="localGroup.questionary.mobi"
+                    v-model="localGroup.poll.mobi"
                     class="mb-5"
                   >
                     <option :value="null">-</option>
@@ -118,7 +117,7 @@
                       <label :for="localGroup.id + 'starter-yes'">Ja</label>
                       <input
                         :id="localGroup.id + '-starter-yes'"
-                        v-model="localGroup.questionary.starter"
+                        v-model="localGroup.poll.starter"
                         :name="localGroup.id + '-starter'"
                         type="radio"
                         :value="true"
@@ -128,7 +127,7 @@
                       <label :for="localGroup.id + 'starter-no'">Nein</label>
                       <input
                         :id="localGroup.id + '-starter-no'"
-                        v-model="localGroup.questionary.starter"
+                        v-model="localGroup.poll.starter"
                         :name="localGroup.id + '-starter'"
                         type="radio"
                         :value="false"
@@ -308,30 +307,23 @@ class LocalGroup {
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
   buddy: any = null
-  questionary = {
-    streik: null,
-    'why-not': '',
-    orga: null,
-    technik: null,
-    mobi: null,
-    starter: null,
-  }
+  poll: any = null
 
   axios: NuxtAxiosInstance
-  questionaryCancelToken: CancelTokenSource | null = null
+  pollCancelToken: CancelTokenSource | null = null
 
-  sendQuestionary() {
+  sendPoll() {
     // eslint-disable-next-line no-unused-expressions
-    this.questionaryCancelToken?.cancel()
-    this.questionaryCancelToken = this.axios.CancelToken.source()
-    return this.axios.post(`/polls/${this.id}/`, this.questionary, {
-      cancelToken: this.questionaryCancelToken.token,
+    this.pollCancelToken?.cancel()
+    this.pollCancelToken = this.axios.CancelToken.source()
+    return this.axios.put(`/localGroups/${this.id}/poll`, this.poll, {
+      cancelToken: this.pollCancelToken.token,
     })
   }
 
   constructor(data: any, axios: NuxtAxiosInstance) {
     this.axios = axios
-    this.questionaryCancelToken = axios.CancelToken.source()
+    this.pollCancelToken = axios.CancelToken.source()
     this.representatives = data.representatives.map(
       (rep: any) => new Representative(rep, axios)
     )
@@ -342,6 +334,7 @@ class LocalGroup {
     this.id = data.id
     // data.buddy is sometimes undefined, but we just want null
     this.buddy = data.buddy || null
+    this.poll = data.poll
   }
 
   async removeRep(rep: Representative) {
