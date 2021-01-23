@@ -310,7 +310,14 @@ class LocalGroup {
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
   newDeli = { name: '', phone: '' }
   buddy: any = null
-  poll: any = null
+  poll = {
+    strike: null,
+    whyNot: null,
+    equipment: null,
+    people: null,
+    mobi: null,
+    starter: null,
+  }
 
   axios: NuxtAxiosInstance
   pollCancelToken: CancelTokenSource | null = null
@@ -337,7 +344,9 @@ class LocalGroup {
     this.id = data.id
     // data.buddy is sometimes undefined, but we just want null
     this.buddy = data.buddy || null
-    this.poll = data.poll
+    if (data.poll) {
+      this.poll = data.poll
+    }
   }
 
   async removeRep(rep: Representative) {
@@ -487,10 +496,10 @@ export default class IndexView extends Vue {
     })
   }
 
-  createNewGroup() {
-    this.$axios
-      .post('localGroups', this.newLocalGroup)
-      .then(() => (this.editingNewGroup = false))
+  async createNewGroup() {
+    const newGroup = await this.$axios.$post('localGroups', this.newLocalGroup)
+    this.editingNewGroup = false
+    this.localGroups.push(new LocalGroup(newGroup, this.$axios))
     this.newLocalGroup = { name: '', state: null }
   }
 
