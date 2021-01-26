@@ -107,6 +107,7 @@ export default {
         'faUserFriends',
         'faSave',
         'faTimes',
+        'faShare',
       ],
       brands: ['faWhatsapp'],
     },
@@ -159,7 +160,7 @@ export default {
         codeChallengeMethod: 'plain',
       },
     },
-    plugins: ['~/plugins/is-admin.ts'],
+    plugins: ['~/plugins/is-admin.ts', '~/plugins/util.ts'],
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

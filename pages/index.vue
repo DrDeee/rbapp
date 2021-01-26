@@ -30,109 +30,278 @@
                   <h3 class="text-xl">Fragen:</h3>
                   <form
                     v-if="localGroup.poll"
-                    class="flex flex-col"
+                    class="flex flex-col max-w-sm"
+                    @submit.prevent=""
                     @change="localGroup.sendPoll()"
                   >
-                    <label :for="localGroup.id + '-streik'" class="mt-5 mb-3">
-                      Hat die OG vor am 18.03 zu streiken?
-                    </label>
-                    <select
-                      :id="localGroup.id + '-streik'"
-                      v-model="localGroup.poll.strike"
-                      class="mb-5"
-                    >
-                      <option :value="null">-</option>
-                      <option :value="1">Sicher nicht</option>
-                      <option :value="2">Wahrscheinlich nicht</option>
-                      <option :value="3">Wahrscheinlich schon</option>
-                      <option :value="4">Sicher</option>
-                    </select>
-                    <label
-                      v-if="
-                        localGroup.poll.streik && localGroup.poll.streik !== 4
-                      "
-                      :for="localGroup.id + '-why-not'"
-                      class="mb-3"
-                    >
-                      Warum nicht?
-                    </label>
-                    <textarea
-                      v-if="
-                        localGroup.poll.streik && localGroup.poll.streik !== 4
-                      "
-                      :id="localGroup.id + '-why-not'"
-                      v-model="localGroup.poll.whyNot"
-                      class="mb-5"
-                    ></textarea>
-                    <label :for="localGroup.id + '-orga'" class="mb-3"
-                      >Habt ihr genug Menschen für die Orga?</label
-                    >
-                    <select
-                      :id="localGroup.id + '-orga'"
-                      v-model="localGroup.poll.people"
-                      class="mb-5"
-                    >
-                      <option :value="null">-</option>
-                      <option value="1">Nein überhaupt nicht</option>
-                      <option value="2">Ein bisschen knapp</option>
-                      <option value="3">Genau richtig</option>
-                      <option value="4">Fast zu viele</option>
-                    </select>
-                    <label :for="localGroup.id + '-technik'" class="mb-3"
-                      >Habt ihr genug Technik?</label
-                    >
-                    <select
-                      :id="localGroup.id + '-technik'"
-                      v-model="localGroup.poll.equipment"
-                      class="mb-5"
-                    >
-                      <option :value="null">-</option>
-                      <option value="1">Nein überhaupt nicht</option>
-                      <option value="2">Ein bisschen knapp</option>
-                      <option value="3">Genau richtig</option>
-                      <option value="4">Fast zu viel</option>
-                    </select>
-                    <label :for="localGroup.id + '-mobi'" class="mb-3"
-                      >Hat die OG schon Mobimaterial bestellt?</label
-                    >
-                    <select
-                      :id="localGroup.id + '-mobi'"
-                      v-model="localGroup.poll.mobi"
-                      class="mb-5"
-                    >
-                      <option :value="null">-</option>
-                      <option value="1">Nein &amp; wird sie nicht</option>
-                      <option value="2">Nein, aber will sie noch</option>
-                      <option value="3">Ja</option>
-                    </select>
-                    <label :for="localGroup.id + '-starter'" class="mb-3"
-                      >Habt ihr alle Sachen aus den Starterpacks?</label
-                    >
+                    <h4 class="mt-5 mb-3 text-lg">
+                      Welche Inhalte des OG Starterpacks habt ihr und in welchem
+                      Bereich wünscht ihr euch mehr Unterstützung?
+                    </h4>
+                    <table class="w-full flex flex-col">
+                      <thead class="flex justify-end w-full">
+                        <th class="mr-2 flex-grow"></th>
+                        <th class="block w-12 mr-2 text-center">Haben Wir</th>
+                        <th class="block w-20 text-center">Brauchen Wir</th>
+                      </thead>
+                      <tbody>
+                        <tr class="flex flex-wrap justify-end items-center">
+                          <td class="flex-grow">Sticker und Plakate:</td>
+                          <td
+                            class="flex items-center justify-center w-12 mr-2"
+                          >
+                            <input
+                              v-model="localGroup.poll.sticker"
+                              type="radio"
+                              name="sticker"
+                              :value="true"
+                            />
+                          </td>
+                          <td class="flex items-center justify-center w-20">
+                            <input
+                              v-model="localGroup.poll.sticker"
+                              type="radio"
+                              name="sticker"
+                              :value="false"
+                            />
+                          </td>
+                          <td
+                            v-if="localGroup.poll.sticker === false"
+                            class="w-full text-center flex justify-end"
+                          >
+                            <a
+                              href="https://fffutu.re/"
+                              class="text-blue-500 mr-2"
+                            >
+                              Bestell-link
+                            </a>
+                            <div class="flex">
+                              <button
+                                v-clipboard="'https://fffutu.re/'"
+                                class="mr-1"
+                              >
+                                <font-awesome-icon icon="copy" />
+                              </button>
+                              <button
+                                v-if="$util.hasShare()"
+                                @lick.prevent="
+                                  $util.share({
+                                    url: 'https://fffutu.re/',
+                                    title: 'Plakate & Sticker bestellen',
+                                  })
+                                "
+                              >
+                                <font-awesome-icon icon="share" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="flex flex-wrap justify-end items-center">
+                          <td class="flex-grow">Ordner:innenbinden:</td>
+                          <td
+                            class="flex items-center justify-center w-12 mr-2"
+                          >
+                            <input
+                              v-model="localGroup.poll.binden"
+                              type="radio"
+                              name="binden"
+                              :value="true"
+                            />
+                          </td>
+                          <td class="flex items-center justify-center w-20">
+                            <input
+                              v-model="localGroup.poll.binden"
+                              type="radio"
+                              name="binden"
+                              :value="false"
+                            />
+                          </td>
+                          <td
+                            v-if="localGroup.poll.binden === false"
+                            class="w-full flex justify-end"
+                          >
+                            <a
+                              href="https://fffutu.re/"
+                              class="text-blue-500 mr-2"
+                            >
+                              Starterpack bestellen
+                            </a>
+                            <div class="flex">
+                              <button
+                                v-clipboard="'https://fffutu.re/'"
+                                class="mr-1"
+                              >
+                                <font-awesome-icon icon="copy" />
+                              </button>
+                              <button
+                                v-if="$util.hasShare()"
+                                @lick.prevent="
+                                  $util.share({
+                                    url: 'https://fffutu.re/',
+                                    title: 'Starterpack für deine OG bestellen',
+                                  })
+                                "
+                              >
+                                <font-awesome-icon icon="share" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr class="flex flex-wrap justify-end items-center">
+                          <td class="flex-grow">Technik:</td>
+                          <td
+                            class="flex items-center justify-center w-12 mr-2"
+                          >
+                            <input
+                              v-model="localGroup.poll.equipment"
+                              type="radio"
+                              name="equipment"
+                              :value="true"
+                            />
+                          </td>
+                          <td class="flex items-center justify-center w-20">
+                            <input
+                              v-model="localGroup.poll.equipment"
+                              type="radio"
+                              name="equipment"
+                              :value="false"
+                            />
+                          </td>
+                          <td
+                            v-if="localGroup.poll.equipment === false"
+                            class="flex w-full justify-end"
+                          >
+                            <a
+                              href="https://fffutu.re/"
+                              class="text-blue-500 mr-2"
+                            >
+                              Technik über OnFire bestellen
+                            </a>
+                            <div class="flex">
+                              <button
+                                v-clipboard="'https://fffutu.re/'"
+                                class="mr-1"
+                              >
+                                <font-awesome-icon icon="copy" />
+                              </button>
+                              <button
+                                v-if="$util.hasShare()"
+                                @lick.prevent="
+                                  $util.share({
+                                    url: 'https://fffutu.re/',
+                                    title: 'Technik für deine OG bestellen',
+                                  })
+                                "
+                              >
+                                <font-awesome-icon icon="share" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p class="mt-3">
+                      Allgemein gibt es noch die Schritt-für-Schritt Anleitung,
+                      die das Organisieren einer Demo komplett erklärt:
+                      <a href="" class="text-blue-500">https://fffutu.re</a>
+                    </p>
+                    <h4 class="mt-5 mb-3 text-lg">
+                      Wie groß war eure größte Demo (ca.) ?
+                    </h4>
+                    <input
+                      type="number"
+                      class="appearance-none w-20 self-end"
+                    />
                     <div
-                      id="localGroup.id + '-starter'"
-                      class="mb-5 flex justify-around"
+                      class="flex mt-5 mb-3 items-center justify-between flex-wrap"
                     >
-                      <div>
-                        <label :for="localGroup.id + 'starter-yes'">Ja</label>
-                        <input
-                          :id="localGroup.id + '-starter-yes'"
-                          v-model="localGroup.poll.starter"
-                          :name="localGroup.id + '-starter'"
-                          type="radio"
-                          :value="true"
-                        />
+                      <h4 class="text-lg">Sind die Delis aktuell?</h4>
+                      <div class="flex-grow flex justify-end">
+                        <label class="flex items-center mr-3">
+                          <input
+                            v-model="localGroup.poll.reps"
+                            type="radio"
+                            class="mr-1"
+                            name="reps"
+                            :value="true"
+                          />
+                          Ja
+                        </label>
+                        <label class="flex items-center mr-3">
+                          <input
+                            v-model="localGroup.poll.reps"
+                            type="radio"
+                            class="mr-1"
+                            name="reps"
+                            :value="false"
+                          />
+                          Nein
+                        </label>
                       </div>
-                      <div>
-                        <label :for="localGroup.id + 'starter-no'">Nein</label>
-                        <input
-                          :id="localGroup.id + '-starter-no'"
-                          v-model="localGroup.poll.starter"
-                          :name="localGroup.id + '-starter'"
-                          type="radio"
-                          :value="false"
-                        />
-                      </div>
+                      <p
+                        v-if="localGroup.poll.reps === false"
+                        class="w-full ml-2"
+                      >
+                        Wer sind denn dann die aktuellen Delis? Trage sie unter
+                        Delis ein und sie werden automatisch den bundesweiten
+                        Infogruppen hinzugefügt
+                      </p>
                     </div>
+                    <div>
+                      <h4 class="mt-5 mb-1 text-lg">
+                        Welche SM-Kanäle habt ihr (WA, Insta, ...) und habt ihr
+                        sie schon auf die Website eingetragen?
+                      </h4>
+                      <div class="flex justify-around">
+                        <label class="flex items-center ml-2">
+                          <input
+                            v-model="localGroup.poll.sm"
+                            type="radio"
+                            class="mr-1"
+                            name="sm"
+                            :value="true"
+                          />
+                          Alles aktuell
+                        </label>
+                        <label class="flex items-center mr-2">
+                          <input
+                            v-model="localGroup.poll.sm"
+                            type="radio"
+                            class="mr-1"
+                            name="sm"
+                            :value="false"
+                          />
+                          Nicht wirklich
+                        </label>
+                      </div>
+                      <p
+                        v-if="localGroup.poll.sm === false"
+                        class="ml-1 mt-1 leading-tight text-center"
+                      >
+                        Die SM-Kanäle können hier aktualisiert werden:
+                        <a
+                          href="https://fffutu.re/MessengerEintragen"
+                          class="text-blue-600"
+                        >
+                          https://fffutu.re/MessengerEintragen
+                        </a>
+                      </p>
+                    </div>
+                    <h4 class="mt-5 mb-3 text-lg">
+                      Werdet ihr beim Großstreik streiken?
+                    </h4>
+                    <select v-model="localGroup.poll.strike">
+                      <option :value="null">-</option>
+                      <option :value="0">Sicher nicht</option>
+                      <option :value="1">Vermutlich nicht</option>
+                      <option :value="2">Vermutlich</option>
+                      <option :value="3">Auf jeden Fall</option>
+                    </select>
+                    <p v-if="localGroup.poll.strike >= 2">
+                      Die Aktion sollte schonmal in die Schnellregistrierung
+                      eingetragen werden:
+                      <a href="" class="text-blue-500">https://fffutu.re</a>
+                    </p>
                   </form>
                 </section>
                 <section class="flex flex-col relative">
@@ -303,6 +472,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 import { CancelTokenSource } from 'axios'
+import { clipboard } from 'vue-clipboards'
 import RepresentativeComponent from '@/components/Representative.vue'
 
 class LocalGroup {
@@ -314,12 +484,14 @@ class LocalGroup {
   newDeli = { name: '', phone: '' }
   buddy: any = null
   poll = {
+    reps: null,
     strike: null,
     whyNot: null,
     equipment: null,
     people: null,
     mobi: null,
     starter: null,
+    binden: null,
   }
 
   axios: NuxtAxiosInstance
@@ -348,7 +520,8 @@ class LocalGroup {
     // data.buddy is sometimes undefined, but we just want null
     this.buddy = data.buddy || null
     if (data.poll) {
-      this.poll = data.poll
+      // TODO:
+      // this.poll = data.poll
     }
   }
 
@@ -468,6 +641,9 @@ class Representative {
 }
 
 @Component({
+  directives: {
+    clipboard,
+  },
   components: {
     RepresentativeComponent,
   },
