@@ -167,7 +167,7 @@
                     @submit.prevent="localGroup.saveNewDeli($axios)"
                   >
                     <div class="flex justify-between">
-                      <label class="my-1">Name:</label>
+                      <label class="m-1">Name:</label>
                       <input
                         v-model="localGroup.newDeli.name"
                         class="my-1"
@@ -176,7 +176,7 @@
                       />
                     </div>
                     <div class="flex justify-between">
-                      <label class="my-1 w-5">Nummer:</label>
+                      <label class="m-1">Nummer:</label>
                       <input
                         v-model="localGroup.newDeli.phone"
                         class="my-1"
