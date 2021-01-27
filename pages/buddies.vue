@@ -31,7 +31,7 @@
             </div>
           </div>
           <div
-            v-if="isAdmin()"
+            v-if="$isAdmin()"
             class="flex sm:items-center justify-around w-full mb-3 sm:mb-0 sm:max-w-sm"
           >
             <button class="w-32 py-1 sm:my-3">Bearbeiten</button>
@@ -70,7 +70,7 @@
           </div>
         </div>
       </div>
-      <div v-if="isAdmin()" class="w-auto mt-5">
+      <div v-if="$isAdmin()" class="w-auto mt-5">
         <button
           v-if="!adding"
           class="mx-auto shadow-2xl px-4 py-1"
@@ -143,11 +143,6 @@ export default class IndexView extends Vue {
       this.buddies.splice(index, 1)
       this.buddyToDelete = null
     })
-  }
-
-  isAdmin() {
-    const user = this.$auth.user as any
-    return user.groups?.includes('/RegioBuddys')
   }
 }
 </script>
