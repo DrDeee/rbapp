@@ -18,15 +18,11 @@
             class="flex flex-col justify-around w-full my-3 sm:max-w-sm md:max-w-full lg:flex-row lg:justify-start lg:items-center"
           >
             <div class="flex justify-between lg:justify-start px-2 lg:w-64">
-              <label class="w-32 lg:w-auto lg:mr-3 font-semibold">
-                Name:
-              </label>
+              <label class="lg:mr-3 font-semibold"> Name: </label>
               {{ buddy.name }}
             </div>
             <div class="flex justify-between px-2">
-              <label class="w-32 lg:mr-3 font-semibold">
-                Cloud-Username:
-              </label>
+              <label class="lg:mr-3 font-semibold"> Cloud-Username: </label>
               {{ buddy.cloudUsername }}
             </div>
           </div>
