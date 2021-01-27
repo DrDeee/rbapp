@@ -21,6 +21,6 @@ deploy main:
     name: deploy_main
     url: regiobuddy.app
   script:
-    - ssh -o "StrictHostKeyChecking=no" root@regiobuddy.app "cd /root/app && git checkout main && git pull origin main && yarn && yarn build && cp -r /root/app/dist /var/www/regiobuddy.app && exit"
+    - ssh -o "StrictHostKeyChecking=no" root@regiobuddy.app "cd /root/app && git checkout main && git pull origin main && yarn && yarn build && rm -r /var/www/regiobuddy.app &&  cp -r /root/app/dist /var/www/regiobuddy.app && exit"
   only:
     - main
