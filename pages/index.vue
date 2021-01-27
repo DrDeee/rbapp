@@ -684,7 +684,7 @@ export default class IndexView extends Vue {
 
   isAdmin() {
     const user = this.$auth.user as any
-    return user.groups?.includes('/OG Amrum')
+    return user.groups?.includes('/RegioBuddys')
   }
 
   handleClick() {
