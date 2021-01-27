@@ -1,7 +1,9 @@
 <template>
   <div class="flex flex-col h-max-inner justify-between">
     <Nuxt id="header-and-main" />
-    <footer v-if="$auth.loggedIn">
+    <!-- The relative is need because otherwise Safari places the content above
+    the footer, don't know why -->
+    <footer v-if="$auth.loggedIn" class="relative">
       <nav id="bottom-nav">
         <ul>
           <li>

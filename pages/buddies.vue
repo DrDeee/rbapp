@@ -7,12 +7,12 @@
         Meine Buddies
       </h1>
     </header>
-    <main class="overflow-scroll p-2 flex flex-col justify-center">
+    <main class="overflow-scroll p-2 justify-center">
       <ul class="flex flex-col p-2">
         <li
           v-for="buddy of buddies"
           :key="buddy.id"
-          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto"
+          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto h-32"
         >
           <div
             class="flex flex-col justify-around w-full my-3 sm:max-w-sm md:max-w-full lg:flex-row lg:justify-start lg:items-center"
@@ -66,7 +66,7 @@
           </div>
         </div>
       </div>
-      <div v-if="$isAdmin()" class="w-auto mt-5">
+      <div v-if="$isAdmin()" class="w-auto mt-1 mb-4">
         <button
           v-if="!adding"
           class="mx-auto shadow-2xl px-4 py-1"
