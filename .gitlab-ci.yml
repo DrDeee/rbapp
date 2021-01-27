@@ -1,0 +1,26 @@
+stages:
+  - deploy
+
+  # This folder is cached between builds
+  # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+
+before_script:
+  # Setup SSH deploy keys
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | ssh-add -
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+deploy main:
+  stage: deploy
+  environment:
+    name: deploy_main
+    url: regiobuddy.app
+  script:
+    - ssh -o "StrictHostKeyChecking=no" root@regiobuddy.app "cd /root/app && git checkout main && git pull origin main && yarn && yarn build && cp -r /root/app/dist /var/www/regiobuddy.app && exit"
+  only:
+    - main
