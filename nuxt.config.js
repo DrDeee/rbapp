@@ -165,7 +165,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'https://buddy.berlinc.net/api/',
+    baseURL: 'https://api.regiobuddy.app/',
     https: true,
   },
 
