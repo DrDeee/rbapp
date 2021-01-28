@@ -12,7 +12,7 @@
         <li
           v-for="buddy of buddies"
           :key="buddy.id"
-          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto h-32"
+          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto"
         >
           <div
             class="flex flex-col justify-around w-full my-3 sm:max-w-sm md:max-w-full lg:flex-row lg:justify-start lg:items-center"
