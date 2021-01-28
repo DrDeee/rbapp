@@ -30,7 +30,7 @@
                   <h3 class="text-xl">Fragen:</h3>
                   <form
                     v-if="localGroup.poll"
-                    class="flex flex-col max-w-sm"
+                    class="flex flex-col md:max-w-sm"
                     @submit.prevent=""
                     @change="localGroup.sendPoll()"
                   >
