@@ -353,6 +353,7 @@
                         class="my-1"
                         type="tel"
                         :disabled="localGroup.newDeliMenu === 'LOADING'"
+                        required
                       />
                     </div>
                     <div class="flex justify-around mt-1">

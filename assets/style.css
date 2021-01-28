@@ -28,7 +28,9 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
-input, textarea, select {
+input,
+textarea,
+select {
   @apply text-primary px-1 rounded-lg border border-solid border-primary;
 }
 select {
