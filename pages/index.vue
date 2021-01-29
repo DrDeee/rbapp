@@ -477,8 +477,16 @@ import { clipboard } from 'vue-clipboards'
 import RepresentativeComponent from '@/components/Representative.vue'
 
 class LocalGroup {
-  representatives: Representative[]
-  exRepresentatives: Representative[]
+  allRepresentatives: Representative[]
+
+  get representatives() {
+    return this.allRepresentatives.filter((rep) => rep.status === 'CURRENT')
+  }
+
+  get exRepresentatives() {
+    return this.allRepresentatives.filter((rep) => rep.status === 'EX')
+  }
+
   name: string
   id: string
   newDeliMenu: 'CLOSED' | 'OPEN' | 'LOADING' = 'CLOSED'
@@ -510,10 +518,7 @@ class LocalGroup {
   constructor(data: any, axios: NuxtAxiosInstance) {
     this.axios = axios
     this.pollCancelToken = axios.CancelToken.source()
-    this.representatives = data.representatives.map(
-      (rep: any) => new Representative(rep, axios)
-    )
-    this.exRepresentatives = data.exRepresentatives.map(
+    this.allRepresentatives = data.representatives.map(
       (rep: any) => new Representative(rep, axios)
     )
     this.name = data.name
@@ -528,30 +533,16 @@ class LocalGroup {
 
   async removeRep(rep: Representative) {
     await this.axios.delete(`/localGroups/${this.id}/representatives/${rep.id}`)
-    const index = this.representatives.findIndex((r) => r === rep)
-    this.representatives.splice(index, 1)
+    const index = this.allRepresentatives.findIndex((r) => r === rep)
+    this.allRepresentatives.splice(index, 1)
   }
 
-  async removeExRep(exRep: Representative) {
-    await this.axios.delete(
-      `/localGroups/${this.id}/exRepresentatives/${exRep.id}`
+  async setRepStatus(rep: Representative, newStatus: 'EX' | 'CURRENT') {
+    rep.status = newStatus
+    await this.axios.put(
+      `/localGroups/${this.id}/representatives/${rep.id}`,
+      rep
     )
-    const index = this.exRepresentatives.findIndex((r) => r === exRep)
-    this.exRepresentatives.splice(index, 1)
-  }
-
-  async makeCurrent(rep: Representative) {
-    await this.axios.put(`/localGroups/${this.id}/representatives/${rep.id}`)
-    const index = this.exRepresentatives.findIndex((r) => r === rep)
-    this.exRepresentatives.splice(index, 1)
-    this.representatives.push(rep)
-  }
-
-  async makeEx(rep: Representative) {
-    await this.axios.put(`/localGroups/${this.id}/exRepresentatives/${rep.id}`)
-    const index = this.representatives.findIndex((r) => r === rep)
-    this.representatives.splice(index, 1)
-    this.exRepresentatives.push(rep)
   }
 
   cancelNewDeli() {
@@ -562,12 +553,12 @@ class LocalGroup {
 
   async saveNewDeli() {
     this.newDeliMenu = 'LOADING'
-    this.representatives.push(
+    this.allRepresentatives.push(
       new Representative(
-        await this.axios.$post(
-          `localGroups/${this.id}/representatives`,
-          this.newDeli
-        ),
+        await this.axios.$post(`localGroups/${this.id}/representatives`, {
+          status: 'CURRENT',
+          ...this.newDeli,
+        }),
         this.axios
       )
     )
@@ -591,6 +582,7 @@ class Representative {
   editing = false
   menuOpen = false
   axios: NuxtAxiosInstance
+  status: 'EX' | 'CURRENT'
 
   id: string
 
@@ -601,6 +593,7 @@ class Representative {
     this.phone = data.phone
     this.originalPhone = this.phone
     this.id = data.id
+    this.status = data.status
   }
 
   get waMe() {
