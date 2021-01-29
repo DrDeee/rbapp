@@ -20,7 +20,7 @@
             }"
           >
             <details class="list-style-none w-full py-1">
-              <summary class="list-style-none text-center">
+              <summary class="list-style-none text-center cursor-pointer">
                 <h2 class="text-2xl">{{ localGroup.name }}</h2>
               </summary>
               <div
@@ -351,6 +351,7 @@
                         class="my-1"
                         type="tel"
                         :disabled="localGroup.newDeliMenu === 'LOADING'"
+                        required
                       />
                     </div>
                     <div class="flex justify-around mt-1">

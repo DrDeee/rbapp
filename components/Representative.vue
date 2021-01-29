@@ -1,16 +1,19 @@
 <template>
-  <div class="flex items-center text-lg p-1 h-24">
+  <form
+    class="flex items-center text-lg p-1 h-24"
+    @submit.prevent="representative.save()"
+  >
     <button
       v-if="!representative.editing"
       class="mx-1 w-8 h-8 flex-none"
-      @click="representative.editing = !representative.editing"
+      @click.prevent="representative.editing = !representative.editing"
     >
       <font-awesome-icon icon="edit" />
     </button>
     <button
       v-else
       class="mx-1 w-8 h-8 flex justify-center items-center text-gray-200 flex-none"
-      @click="representative.cancel()"
+      @click.prevent="representative.cancel()"
     >
       <font-awesome-icon icon="times" />
     </button>
@@ -20,7 +23,7 @@
         <label v-if="!representative.editing" class="mx-1">
           {{ representative.name }}
         </label>
-        <input v-else v-model="representative.name" class="w-full" />
+        <input v-else v-model="representative.name" class="w-full" required />
         <!--
       If the menu is open somehow the event handler on the main
       div triggers also and the menu isn't hidden :(
@@ -84,7 +87,8 @@
           v-else
           v-model="representative.phone"
           class="text-primary px-1 rounded-lg w-full border border-solid border-primary"
-          type="phone"
+          type="tel"
+          required
         />
         <div v-if="!representative.editing" class="flex">
           <a
@@ -103,11 +107,11 @@
     <button
       v-if="representative.editing"
       class="flex-none mx-1 w-8 h-8"
-      @click="representative.save()"
+      type="submit"
     >
       <font-awesome-icon icon="save" />
     </button>
-  </div>
+  </form>
 </template>
 <script lang="ts">
 import { Prop, Vue, Component } from 'vue-property-decorator'
