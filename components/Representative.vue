@@ -48,9 +48,10 @@
               <button
                 class="p-2 w-full text-center rounded-t-lg rounded-b-none"
                 @click="
-                  isEx
-                    ? localGroup.makeCurrent(representative)
-                    : localGroup.makeEx(representative)
+                  localGroup.setRepStatus(
+                    representative,
+                    isEx ? 'CURRENT' : 'EX'
+                  )
                 "
               >
                 {{ isEx ? 'Zum Deli machen' : 'Zum Ex-Deli machen' }}
@@ -59,11 +60,7 @@
             <li>
               <button
                 class="p-2 w-full text-center rounded-b-lg rounded-t-none shadow-none"
-                @click="
-                  isEx
-                    ? localGroup.removeExRep(representative)
-                    : localGroup.removeRep(representative)
-                "
+                @click="localGroup.removeRep(representative)"
               >
                 Kontaktdaten löschen
               </button>
