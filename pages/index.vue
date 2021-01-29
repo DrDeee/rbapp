@@ -19,7 +19,7 @@
               'border-b-gray-600': i === localGroups.length - 1,
             }"
           >
-            <details class="list-style-none w-full p-1">
+            <details class="list-style-none w-full py-1">
               <summary class="list-style-none text-center">
                 <h2 class="text-2xl">{{ localGroup.name }}</h2>
               </summary>
