@@ -47,9 +47,12 @@
                           />
                         </td>
                         <td class="ml-3">
-                          <button>
+                          <NuxtLink
+                            :to="`/${localGroup.name}/poll`"
+                            class="button"
+                          >
                             <font-awesome-icon icon="edit" />
-                          </button>
+                          </NuxtLink>
                         </td>
                       </tr>
                     </tbody>
