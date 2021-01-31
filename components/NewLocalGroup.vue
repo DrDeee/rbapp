@@ -5,7 +5,7 @@
       class="my-5 text-xl relative"
       @click="editingNewGroup = true"
     >
-      Neue Ortsgruppeeee
+      Neue Ortsgruppe
     </button>
     <form
       v-else
