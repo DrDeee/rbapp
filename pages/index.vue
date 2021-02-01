@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full" @click=";(openMenu = null) && alert('test')">
+  <div class="h-full">
     <header class="border-b-2 border-primary">
       <h1 class="text-3xl text-center font-bold mt-1 w-full">
         Meine Ortsgruppen
