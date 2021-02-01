@@ -109,6 +109,7 @@ export default {
         'faTimes',
         'faShare',
         'faCheckCircle',
+        'faSpinner',
       ],
       brands: ['faWhatsapp'],
     },
