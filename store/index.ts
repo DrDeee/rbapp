@@ -2,10 +2,10 @@ import { LocalGroup } from '@/src/LocalGroup';
 import { Representative } from '@/src/Representative';
 
 interface IndexState {
-  localGroups: Array<LocalGroup>
+  localGroups: Array<LocalGroup> | null,
 }
 export const state = (): IndexState => ({
-  localGroups: []
+  localGroups: null
 })
 
 export const mutations = {
@@ -13,20 +13,20 @@ export const mutations = {
     state.localGroups = groups.sort((a, b) => a.name.localeCompare(b.name));
   },
   setBuddy(state: IndexState, { group, buddy }: any) {
-    let localGroup = state.localGroups.find((g) => g.id === group);
+    let localGroup = state.localGroups?.find((g) => g.id === group);
     if (localGroup) {
       localGroup.buddy = buddy;
     }
   },
   setRepStatus(state: IndexState, { group, rep, status }: any) {
-    let localGroup = state.localGroups.find((g) => g.id === group);
+    let localGroup = state.localGroups?.find((g) => g.id === group);
     let representative = localGroup?.allRepresentatives.find((r) => r.id == rep);
     if (representative) {
       representative.status = status;
     }
   },
   setRepData(state: IndexState, { group, rep, data }: any) {
-    let localGroup = state.localGroups.find((g) => g.id === group);
+    let localGroup = state.localGroups?.find((g) => g.id === group);
     let representative = localGroup?.allRepresentatives.find((r) => r.id == rep);
     if (representative) {
       representative.phone = data.phone;
@@ -34,17 +34,17 @@ export const mutations = {
     }
   },
   removeRep(state: IndexState, { group, rep }: any) {
-    let localGroup = state.localGroups.find((g) => g.id === group);
+    let localGroup = state.localGroups?.find((g) => g.id === group);
     localGroup?.allRepresentatives.splice(
       localGroup?.allRepresentatives.findIndex((r) => r.id === rep),
       1);
   },
   newRep(state: IndexState, {group, rep}: any) {
-    let localGroup = state.localGroups.find((g) => g.id === group);
+    let localGroup = state.localGroups?.find((g) => g.id === group);
     localGroup?.allRepresentatives.push(rep);
   },
   newLocalGroup(state: IndexState, newLocalGroup: any) {
-    state.localGroups.push(newLocalGroup);
+    state?.localGroups?.push(newLocalGroup);
   }
 } 
 

@@ -7,7 +7,10 @@
     </header>
     <main>
       <div class="flex flex-col h-full">
-        <ul class="flex-grow m-2 shadow-2xl overflow-y-scroll">
+        <ul
+          v-if="localGroups !== null"
+          class="flex-grow m-2 shadow-2xl overflow-y-scroll"
+        >
           <li
             v-for="(localGroup, i) of localGroups"
             :key="localGroup.id"
@@ -164,6 +167,17 @@
             </details>
           </li>
         </ul>
+        <div
+          v-else
+          class="flex-grow m-2 shadow-2xl flex items-center justify-center bg-gray-500 bg-opacity-25 rounded-lg"
+        >
+          <font-awesome-icon
+            icon="spinner"
+            class="text-5xl animate-spin"
+            aria-hidden="false"
+            alt="Ortsgruppen werden geladen"
+          />
+        </div>
         <NewLocalGroup v-if="$isAdmin()" />
       </div>
     </main>
