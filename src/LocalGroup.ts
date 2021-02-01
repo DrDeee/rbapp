@@ -34,7 +34,7 @@ export class LocalGroup {
     this.buddy = data.buddy || null
     if (data.poll) {
       // TODO:
-      // this.poll = data.poll
+      this.poll = data.poll
     }
   }
 } 

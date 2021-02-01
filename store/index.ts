@@ -44,8 +44,14 @@ export const mutations = {
     localGroup?.allRepresentatives.push(rep);
   },
   newLocalGroup(state: IndexState, newLocalGroup: any) {
-    state?.localGroups?.push(newLocalGroup);
-  }
+    state.localGroups?.push(newLocalGroup);
+  },
+  setPoll(state: IndexState, { poll, group }: any) {
+    let localGroup = state.localGroups?.find((g) => g.id === group)
+    if(localGroup) {
+      localGroup.poll = poll;
+    }
+  },
 } 
 
 export const actions: any = {
@@ -92,7 +98,7 @@ export const actions: any = {
     commit("removeRep", { group, rep });
   },
   async getGroups({ commit }: any) {
-    this.$axios.$get('localGroups').then((data: any) => {
+    return this.$axios.$get('localGroups').then((data: any) => {
       commit(
         'setGroups', data.map(
           (localGroup: any) => new LocalGroup(localGroup)
@@ -103,5 +109,11 @@ export const actions: any = {
   async newLocalGroup({ commit }: any, newLocalGroup: any) {
     const newGroup = await this.$axios.$post('localGroups', newLocalGroup);
     commit('newLocalGroup', new LocalGroup(newGroup));
-  }
+  },
+  submitPoll({ commit }: any, { poll, group }: any) {
+    this
+      .$axios
+      .$put(`localGroups/${group}/poll`, poll)
+      .then(() => commit("setPoll", { poll, group }));
+  },
 }

@@ -7,7 +7,7 @@
     </header>
     <main class="overflow-y-scroll">
       <form
-        v-if="localGroup && localGroup.poll"
+        v-if="localGroup && poll"
         class="flex flex-col h-full p-1 sm:p-5 max-w-xl mx-auto"
         @submit.prevent=""
       >
@@ -30,7 +30,7 @@
               </td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="localGroup.poll.sticker"
+                  v-model="poll.sticker"
                   type="radio"
                   name="sticker"
                   :value="true"
@@ -38,14 +38,14 @@
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="localGroup.poll.sticker"
+                  v-model="poll.sticker"
                   type="radio"
                   name="sticker"
                   :value="false"
                 />
               </td>
               <td
-                v-if="localGroup.poll.sticker === false"
+                v-if="poll.sticker === false"
                 class="w-full sm:w-auto text-center flex justify-end"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -77,7 +77,7 @@
               </td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="localGroup.poll.binden"
+                  v-model="poll.binden"
                   type="radio"
                   name="binden"
                   :value="true"
@@ -85,14 +85,14 @@
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="localGroup.poll.binden"
+                  v-model="poll.binden"
                   type="radio"
                   name="binden"
                   :value="false"
                 />
               </td>
               <td
-                v-if="localGroup.poll.binden === false"
+                v-if="poll.binden === false"
                 class="w-full flex justify-end sm:w-auto"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -122,7 +122,7 @@
               <td class="flex-grow sm:flex-none sm:w-40">Technik:</td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="localGroup.poll.equipment"
+                  v-model="poll.equipment"
                   type="radio"
                   name="equipment"
                   :value="true"
@@ -130,14 +130,14 @@
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="localGroup.poll.equipment"
+                  v-model="poll.equipment"
                   type="radio"
                   name="equipment"
                   :value="false"
                 />
               </td>
               <td
-                v-if="localGroup.poll.equipment === false"
+                v-if="poll.equipment === false"
                 class="flex w-full justify-end sm:w-auto"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -186,7 +186,7 @@
             <div class="flex-grow flex justify-end">
               <label class="flex items-center mr-3">
                 <input
-                  v-model="localGroup.poll.reps"
+                  v-model="poll.reps"
                   type="radio"
                   class="mr-1"
                   name="reps"
@@ -196,7 +196,7 @@
               </label>
               <label class="flex items-center mr-3">
                 <input
-                  v-model="localGroup.poll.reps"
+                  v-model="poll.reps"
                   type="radio"
                   class="mr-1"
                   name="reps"
@@ -217,11 +217,8 @@
               {{ representative.name }}, {{ representative.formattedPhone }}
             </li>
           </ul>
-          <NewRepresentative
-            v-if="localGroup.poll.reps === false"
-            class="mt-5"
-          />
-          <p v-if="localGroup.poll.reps === false" class="ml-2">
+          <NewRepresentative v-if="poll.reps === false" class="mt-5" />
+          <p v-if="poll.reps === false" class="ml-2">
             Wer sind denn dann die aktuellen Delis? Trage sie entweder hier oder
             später ein und sie werden automatisch den bundesweiten Infogruppen
             hinzugefügt
@@ -235,7 +232,7 @@
           <div class="flex flex-col flex-grow justify-around ml-3">
             <label class="flex items-center self-end w-32">
               <input
-                v-model="localGroup.poll.sm"
+                v-model="poll.sm"
                 type="radio"
                 class="mr-1"
                 name="sm"
@@ -245,7 +242,7 @@
             </label>
             <label class="flex items-center self-end w-32">
               <input
-                v-model="localGroup.poll.sm"
+                v-model="poll.sm"
                 type="radio"
                 class="mr-1"
                 name="sm"
@@ -255,7 +252,7 @@
             </label>
           </div>
           <p
-            v-if="localGroup.poll.sm === false"
+            v-if="poll.sm === false"
             class="ml-1 mt-1 leading-tight text-center"
           >
             Die SM-Kanäle können hier aktualisiert werden:
@@ -270,7 +267,7 @@
         <div class="flex flex-wrap items-center my-5">
           <h4 class="text-lg mr-3">Werdet ihr beim Großstreik streiken?</h4>
           <div class="flex-grow flex justify-end">
-            <select v-model="localGroup.poll.strike" class="max-w-sm self-end">
+            <select v-model="poll.strike" class="max-w-sm self-end">
               <option :value="null">-</option>
               <option :value="0">Sicher nicht</option>
               <option :value="1">Vermutlich nicht</option>
@@ -278,7 +275,7 @@
               <option :value="3">Auf jeden Fall</option>
             </select>
           </div>
-          <p v-if="localGroup.poll.strike >= 2">
+          <p v-if="poll.strike >= 2">
             Die Aktion sollte schonmal in die Schnellregistrierung eingetragen
             werden:
             <a href="" class="text-blue-500">https://fffutu.re</a>
@@ -289,7 +286,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { LocalGroup } from '@/src/LocalGroup'
 
 @Component
@@ -302,9 +299,25 @@ export default class PollView extends Vue {
     )
   }
 
+  poll: any = null
+
+  @Watch('poll', { deep: true })
+  onPollChanged(poll: any, oldValue: any) {
+    if (oldValue !== null) {
+      this.$store.dispatch('submitPoll', {
+        group: this.localGroup.id,
+        poll,
+      })
+    }
+  }
+
   created() {
     if (!this.$store.state.localGroups) {
-      this.$store.dispatch('getGroups')
+      this.$store
+        .dispatch('getGroups')
+        .then(() => (this.poll = Object.assign({}, this.localGroup?.poll)))
+    } else {
+      this.poll = Object.assign({}, this.localGroup?.poll)
     }
   }
 }
