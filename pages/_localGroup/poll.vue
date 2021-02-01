@@ -2,7 +2,7 @@
   <div class="h-full">
     <header class="border-b-2 border-primary h-auto">
       <h1 class="text-3xl text-center font-bold mt-1 w-full">
-        Umfrage – Neuburg an der Donau
+        Umfrage – {{ localGroup.name }}
       </h1>
     </header>
     <main class="overflow-y-scroll">
@@ -163,15 +163,19 @@
         <div
           class="flex flex-col mt-5 mb-3 items-center justify-between flex-wrap"
         >
-          <p class="text-lg self-start">Sind das hier:</p>
+          <p class="text-lg self-start mb-3">Sind das hier:</p>
+          <div v-if="localGroup.representatives.length === 0">
+            Keine Delis eingespeichert
+          </div>
           <ul>
             <li
               v-for="representative in localGroup.representatives"
               :key="representative.id"
             >
-              {{ representative.name }}, {{ representative.phone }}
+              {{ representative.name }}, {{ representative.formattedPhone }}
             </li>
           </ul>
+          <NewRepresentative class="mt-5" />
           <p class="text-lg self-start">die aktuellen Delis?</p>
           <div class="flex-grow flex justify-end">
             <label class="flex items-center mr-3">
@@ -196,8 +200,9 @@
             </label>
           </div>
           <p v-if="localGroup.poll.reps === false" class="w-full ml-2">
-            Wer sind denn dann die aktuellen Delis? Trage sie unter Delis ein
-            und sie werden automatisch den bundesweiten Infogruppen hinzugefügt
+            Wer sind denn dann die aktuellen Delis? Trage sie entweder hier oder
+            später ein und sie werden automatisch den bundesweiten Infogruppen
+            hinzugefügt
           </p>
         </div>
         <div>
@@ -265,16 +270,14 @@ import { LocalGroup } from '@/src/LocalGroup'
 export default class PollView extends Vue {
   get localGroup() {
     return (
-      this.$store.state.localGroups.find(
+      this.$store.state.localGroups?.find(
         (g: LocalGroup) => g.name === this.$route.params.localGroup
       ) || null
     )
   }
 
   created() {
-    console.log(this.$route.params.localGroup)
     if (this.$store.state.localGroups.length === 0) {
-      console.log('test')
       this.$store.dispatch('getGroups')
     }
   }
