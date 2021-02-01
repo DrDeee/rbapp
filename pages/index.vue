@@ -76,50 +76,14 @@
                       />
                     </li>
                   </ul>
-                  <button
-                    v-if="newRepMenus[localGroup.id] === undefined"
-                    class="m-3 text-xl inline-block"
-                    @click="openNewRepMenu(localGroup.id)"
-                  >
-                    Neuer Deli
-                  </button>
-                  <form
-                    v-else
-                    class="flex flex-col px-1"
-                    :class="{
-                      'text-gray-600': localGroup.newDeliMenu === 'LOADING',
-                    }"
-                    @reset="cancelNewRep(localGroup.id)"
-                    @submit.prevent="submitNewRep(localGroup.id)"
-                  >
-                    <div class="flex justify-between">
-                      <label class="m-1">Name:</label>
-                      <input
-                        v-model="newRepMenus[localGroup.id].name"
-                        class="my-1"
-                        :disabled="localGroup.newDeliMenu === 'LOADING'"
-                        required
-                      />
-                    </div>
-                    <div class="flex justify-between">
-                      <label class="m-1">Nummer:</label>
-                      <input
-                        v-model="newRepMenus[localGroup.id].phone"
-                        class="my-1"
-                        type="tel"
-                        required
-                      />
-                    </div>
-                    <div class="flex justify-around mt-1">
-                      <input
-                        type="reset"
-                        class="px-1"
-                        value="Abbrechen"
-                        @click="cancelNewRep(localGroup.id)"
-                      />
-                      <input type="submit" value="Speichern" class="px-1" />
-                    </div>
-                  </form>
+                  <NewRepresentative
+                    @newRep="
+                      $store.dispatch('newRep', {
+                        rep: $event,
+                        group: localGroup.id,
+                      })
+                    "
+                  />
                 </section>
                 <section
                   v-if="localGroup.exRepresentatives.length > 0"
@@ -199,27 +163,6 @@ import RepresentativeComponent from '@/components/Representative.vue'
 })
 export default class IndexView extends Vue {
   openMenu: null | HTMLElement = null
-
-  newRepMenus: any = {}
-
-  openNewRepMenu(groupId: string) {
-    Vue.set(this.newRepMenus, groupId, {
-      name: '',
-      phone: '',
-    })
-  }
-
-  cancelNewRep(groupId: string) {
-    Vue.delete(this.newRepMenus, groupId)
-  }
-
-  submitNewRep(groupId: string) {
-    this.$store.dispatch('newRep', {
-      group: groupId,
-      rep: this.newRepMenus[groupId],
-    })
-    this.cancelNewRep(groupId)
-  }
 
   get localGroups() {
     return this.$store.state.localGroups
