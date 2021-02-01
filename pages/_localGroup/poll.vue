@@ -2,7 +2,7 @@
   <div class="h-full">
     <header class="border-b-2 border-primary h-auto">
       <h1 class="text-3xl text-center font-bold mt-1 w-full">
-        Umfrage – {{ localGroup.name }}
+        Umfrage – {{ localGroup && localGroup.name }}
       </h1>
     </header>
     <main class="overflow-y-scroll">
@@ -303,7 +303,7 @@ export default class PollView extends Vue {
   }
 
   created() {
-    if (this.$store.state.localGroups.length === 0) {
+    if (!this.$store.state.localGroups) {
       this.$store.dispatch('getGroups')
     }
   }
