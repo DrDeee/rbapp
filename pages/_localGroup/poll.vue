@@ -30,22 +30,22 @@
               </td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="poll.sticker"
+                  v-model="poll.hasMobiStuff"
                   type="radio"
-                  name="sticker"
+                  name="hasMobiStuff"
                   :value="true"
                 />
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="poll.sticker"
+                  v-model="poll.hasMobiStuff"
                   type="radio"
-                  name="sticker"
+                  name="hasMobiStuff"
                   :value="false"
                 />
               </td>
               <td
-                v-if="poll.sticker === false"
+                v-if="poll.hasMobiStuff === false"
                 class="w-full sm:w-auto text-center flex justify-end"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -77,22 +77,22 @@
               </td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="poll.binden"
+                  v-model="poll.hasArmbands"
                   type="radio"
-                  name="binden"
+                  name="hasArmbands"
                   :value="true"
                 />
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="poll.binden"
+                  v-model="poll.hasArmbands"
                   type="radio"
-                  name="binden"
+                  name="hasArmbands"
                   :value="false"
                 />
               </td>
               <td
-                v-if="poll.binden === false"
+                v-if="poll.hasArmbands === false"
                 class="w-full flex justify-end sm:w-auto"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -122,22 +122,22 @@
               <td class="flex-grow sm:flex-none sm:w-40">Technik:</td>
               <td class="flex items-center justify-center w-12 mr-2">
                 <input
-                  v-model="poll.equipment"
+                  v-model="poll.hasEquipment"
                   type="radio"
-                  name="equipment"
+                  name="hasEquipment"
                   :value="true"
                 />
               </td>
               <td class="flex items-center justify-center w-20">
                 <input
-                  v-model="poll.equipment"
+                  v-model="poll.hasEquipment"
                   type="radio"
-                  name="equipment"
+                  name="hasEquipment"
                   :value="false"
                 />
               </td>
               <td
-                v-if="poll.equipment === false"
+                v-if="poll.hasEquipment === false"
                 class="flex w-full justify-end sm:w-auto"
               >
                 <a href="https://fffutu.re/" class="text-blue-500 mr-2">
@@ -173,7 +173,11 @@
             Wie groß war eure größte Demo (ca.)?
           </h4>
           <div class="flex-grow flex justify-end">
-            <input type="number" class="appearance-none w-20" />
+            <input
+              v-model="poll.biggestStrike"
+              type="number"
+              class="appearance-none w-20"
+            />
           </div>
         </div>
         <div
@@ -186,20 +190,20 @@
             <div class="flex-grow flex justify-end">
               <label class="flex items-center mr-3">
                 <input
-                  v-model="poll.reps"
+                  v-model="poll.hasUpToDateReps"
                   type="radio"
                   class="mr-1"
-                  name="reps"
+                  name="hasUpToDateReps"
                   :value="true"
                 />
                 Ja
               </label>
               <label class="flex items-center mr-3">
                 <input
-                  v-model="poll.reps"
+                  v-model="poll.hasUpToDateReps"
                   type="radio"
                   class="mr-1"
-                  name="reps"
+                  name="hasUpToDateReps"
                   :value="false"
                 />
                 Nein
@@ -217,8 +221,11 @@
               {{ representative.name }}, {{ representative.formattedPhone }}
             </li>
           </ul>
-          <NewRepresentative v-if="poll.reps === false" class="mt-5" />
-          <p v-if="poll.reps === false" class="ml-2">
+          <NewRepresentative
+            v-if="poll.hasUpToDateReps === false"
+            class="mt-5"
+          />
+          <p v-if="poll.hasUpToDateReps === false" class="ml-2">
             Wer sind denn dann die aktuellen Delis? Trage sie entweder hier oder
             später ein und sie werden automatisch den bundesweiten Infogruppen
             hinzugefügt
@@ -232,27 +239,27 @@
           <div class="flex flex-col flex-grow justify-around ml-3">
             <label class="flex items-center self-end w-32">
               <input
-                v-model="poll.sm"
+                v-model="poll.hasUpToDateSM"
                 type="radio"
                 class="mr-1"
-                name="sm"
+                name="hasUpToDateSM"
                 :value="true"
               />
               Alles aktuell
             </label>
             <label class="flex items-center self-end w-32">
               <input
-                v-model="poll.sm"
+                v-model="poll.hasUpToDateSM"
                 type="radio"
                 class="mr-1"
-                name="sm"
+                name="hasUpToDateSM"
                 :value="false"
               />
               Nicht wirklich
             </label>
           </div>
           <p
-            v-if="poll.sm === false"
+            v-if="poll.hasUpToDateSM === false"
             class="ml-1 mt-1 leading-tight text-center"
           >
             Die SM-Kanäle können hier aktualisiert werden:
@@ -267,7 +274,7 @@
         <div class="flex flex-wrap items-center my-5">
           <h4 class="text-lg mr-3">Werdet ihr beim Großstreik streiken?</h4>
           <div class="flex-grow flex justify-end">
-            <select v-model="poll.strike" class="max-w-sm self-end">
+            <select v-model="poll.globalStrike" class="max-w-sm self-end">
               <option :value="null">-</option>
               <option :value="0">Sicher nicht</option>
               <option :value="1">Vermutlich nicht</option>
