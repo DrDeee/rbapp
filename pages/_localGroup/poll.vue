@@ -213,7 +213,7 @@
           <div v-if="localGroup.representatives.length === 0">
             Keine Delis eingespeichert
           </div>
-          <ul class="w-full flex flex-col justify-center">
+          <ul class="w-full flex flex-col justify-center items-center">
             <li
               v-for="representative in localGroup.representatives"
               :key="representative.id"
