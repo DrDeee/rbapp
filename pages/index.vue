@@ -45,6 +45,7 @@
                         <td class="w-32">Großstreik 19.03</td>
                         <td class="text-center w-24">
                           <font-awesome-icon
+                            v-if="isFinishedPoll(localGroup.poll)"
                             class="text-primary"
                             icon="check-circle"
                           />
@@ -196,6 +197,15 @@ export default class IndexView extends Vue {
 
   isExpanded(groupId: string) {
     return this.expandedGroups[groupId]
+  }
+
+  isFinishedPoll(poll: any) {
+    for (const prop in poll) {
+      if (poll[prop] === null) {
+        return false
+      }
+    }
+    return true
   }
 }
 </script>
