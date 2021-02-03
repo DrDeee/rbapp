@@ -7,9 +7,63 @@
     </header>
     <main>
       <div class="flex flex-col h-full">
+        <div v-if="$isAdmin()" class="shadow-lg mt-2 mx-2">
+          <div class="flex">
+            <input
+              v-model="searchTerm"
+              type="search"
+              class="rounded-b-none rounded-r-none flex-grow"
+              placeholder="Suchen..."
+            />
+            <button class="rounded-l-none rounded-b-none">
+              <font-awesome-icon icon="filter" @click="toggleFilterMenu()" />
+            </button>
+          </div>
+          <div class="relative w-full flex justify-end">
+            <div
+              class="h-0 border-0 transition-all duration-300 flex flex-col overflow-hidden p-0 absolute bg-white border-primary border-l border-r w-74 justify-center"
+              :class="{
+                'h-24': isFilterExpanded,
+                'p-1': isFilterExpanded,
+                'border-b': isFilterExpanded,
+              }"
+            >
+              <label class="flex items-center w-full">
+                <input
+                  v-model="filterSetting"
+                  type="radio"
+                  class="mr-2"
+                  name="filter"
+                  value="all"
+                />
+                Alle OGs
+              </label>
+              <label class="flex items-center">
+                <input
+                  v-model="filterSetting"
+                  type="radio"
+                  class="mr-2"
+                  name="filter"
+                  value="mine"
+                />
+                Nur OGs, von denen ich Buddy bin
+              </label>
+              <label class="flex items-center">
+                <input
+                  v-model="filterSetting"
+                  type="radio"
+                  class="mr-2"
+                  name="filter"
+                  value="withoutBuddy"
+                />
+                Nur OGs ohne Buddy
+              </label>
+            </div>
+          </div>
+        </div>
         <ul
           v-if="localGroups !== null"
-          class="flex-grow m-2 shadow-2xl overflow-y-scroll"
+          class="flex-grow mx-2 mb-2 shadow-2xl overflow-y-scroll"
         >
           <li
             v-for="(localGroup, i) of localGroups"
@@ -17,7 +71,6 @@
             class="border border-t-gray-600 w-full flex justify-center"
             :class="{
               'bg-green-600': localGroup.finished,
-              'rounded-t-lg': i === 0,
               'rounded-b-lg': i === localGroups.length - 1,
               'border-b-gray-600': i === localGroups.length - 1,
             }"
@@ -153,6 +206,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { clipboard } from 'vue-clipboards'
 import RepresentativeComponent from '@/components/Representative.vue'
+import { LocalGroup } from 'src/LocalGroup'
 
 @Component({
   directives: {
@@ -165,11 +219,27 @@ import RepresentativeComponent from '@/components/Representative.vue'
 export default class IndexView extends Vue {
   openMenu: null | HTMLElement = null
 
+  searchTerm = ''
+
   get localGroups() {
-    return this.$store.state.localGroups
+    return this.$store.state.localGroups?.filter((g: LocalGroup) => {
+      if (this.filterSetting === 'withoutBuddy' && g.buddy !== null) {
+        return false
+      } else if (
+        this.filterSetting === 'mine' &&
+        (g.buddy === null || g.buddy !== this.userAsBuddy.id)
+      ) {
+        return false
+      }
+      if (this.searchTerm !== '') {
+        return g.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      }
+      return true
+    })
   }
 
   buddies: any = []
+  userAsBuddy: any = null
 
   $axios: any
 
@@ -177,6 +247,9 @@ export default class IndexView extends Vue {
     this.$store.dispatch('getGroups')
     this.$axios.$get('buddies').then((data: any) => {
       this.buddies = data
+      this.userAsBuddy = this.buddies.find(
+        (buddy: any) => buddy.cloudUsername === this.$auth.user!.username
+      )
     })
   }
 
@@ -207,6 +280,13 @@ export default class IndexView extends Vue {
     }
     return true
   }
+
+  isFilterExpanded = false
+  toggleFilterMenu() {
+    this.isFilterExpanded = !this.isFilterExpanded
+  }
+
+  filterSetting: 'all' | 'mine' | 'withoutBuddy' = 'all'
 }
 </script>
 <style>

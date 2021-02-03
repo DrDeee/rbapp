@@ -13,13 +13,15 @@ button[disabled] {
 button,
 .button,
 input[type='submit'],
-input[type='reset'],
+input[type='reset'] {
+  @apply rounded-xl flex justify-center items-center bg-primary text-gray-200 border border-primary px-2 py-1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 button:active,
 .button:active,
 input[type='submit']:active,
 input[type='reset']:active {
-  @apply rounded-xl flex justify-center items-center bg-primary text-gray-200 border border-primary px-2 py-1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  @apply bg-primary text-gray-200 border border-primary;
 }
 
 details > summary {
