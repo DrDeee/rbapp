@@ -282,7 +282,7 @@
               <option :value="3">Auf jeden Fall</option>
             </select>
           </div>
-          <p v-if="poll.strike >= 2">
+          <p v-if="poll.globalStrike >= 2">
             Die Aktion sollte schonmal in die Schnellregistrierung eingetragen
             werden:
             <a href="" class="text-blue-500">https://fffutu.re</a>
