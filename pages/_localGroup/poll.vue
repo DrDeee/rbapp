@@ -140,7 +140,10 @@
                 v-if="poll.hasEquipment === false"
                 class="flex w-full justify-end sm:w-auto"
               >
-                <a href="https://fffutu.re/" class="text-blue-500 mr-2">
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfFkBfhHskJhlkfykarrE2MOyv3lbHXNKgCVCaGpFoqZ6Qrrg/viewform"
+                  class="text-blue-500 mr-2"
+                >
                   Technikbedarfsumfrage
                 </a>
                 <div class="flex">
