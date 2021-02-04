@@ -32,4 +32,4 @@ deploy dev:
   script: 
     - ssh -o "StrictHostKeyChecking=no" root@regiobuddy.app "cd /root/app-dev && git checkout dev && git pull origin dev && yarn && yarn build && rm -r /var/www/beta.regiobuddy.app &&  cp -r /root/app-dev/dist /var/www/beta.regiobuddy.app && exit"
   only:
-    - main
+    - dev
