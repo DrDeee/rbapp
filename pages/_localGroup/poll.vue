@@ -183,8 +183,12 @@
         <p class="mt-3">
           Allgemein gibt es noch die Schritt-für-Schritt Anleitung, die das
           Organisieren einer Demo komplett erklärt:
-          <a href="" class="text-blue-500" target="_blank">
-            https://fffutu.re
+          <a
+            href="https://fffutu.re/schritt-fuer-schritt"
+            class="text-blue-500"
+            target="_blank"
+          >
+            https://fffutu.re/schritt-fuer-schritt
           </a>
         </p>
         <div class="flex flex-wrap mt-5 items-center">
