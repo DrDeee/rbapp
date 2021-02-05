@@ -8,7 +8,7 @@
     <main class="overflow-y-scroll">
       <form
         v-if="localGroup && poll"
-        class="flex flex-col h-full p-1 sm:p-5 max-w-xl mx-auto"
+        class="flex flex-col p-1 sm:p-5 max-w-xl mx-auto"
         @submit.prevent=""
       >
         <h4 class="mb-3 text-lg">
@@ -56,14 +56,17 @@
                   Bestell-link
                 </a>
                 <div class="flex">
-                  <button v-clipboard="'https://fffutu.re/'" class="mr-5">
+                  <button
+                    v-clipboard="'https://forms.gle/peK8Mf9EJWx21Yax6'"
+                    class="mr-5"
+                  >
                     <font-awesome-icon icon="copy" />
                   </button>
                   <button
                     v-if="$util.hasShare()"
                     @lick.prevent="
                       $util.share({
-                        url: 'https://fffutu.re/',
+                        url: 'https://forms.gle/peK8Mf9EJWx21Yax6',
                         title: 'Plakate & Sticker bestellen',
                       })
                     "
@@ -318,8 +321,13 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator'
 import { LocalGroup } from '@/src/LocalGroup'
+import { clipboard } from 'vue-clipboards'
 
-@Component
+@Component({
+  directives: {
+    clipboard,
+  },
+})
 export default class PollView extends Vue {
   get localGroup() {
     return (
