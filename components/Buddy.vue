@@ -3,18 +3,29 @@
     class="my-1 border border-t-gray-600 w-full flex justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl mx-auto p-1 sm:p-2"
   >
     <div
-      class="flex flex-col sm:flex-row justify-around sm:justify-start items-center w-full mr-2"
+      class="flex flex-col sm:flex-row justify-around sm:justify-start sm:items-center w-full mr-2"
     >
-      <div class="flex h-8 items-center sm:w-40">
-        <label class="font-semibold w-32 sm:w-auto mr-2"> Name: </label>
-        <input v-if="editable" :value="buddy.name" />
+      <div class="flex h-8 items-center sm:w-40 sm:mr-2">
+        <label class="font-semibold w-32 sm:w-auto mr-2 flex-none">
+          Name:
+        </label>
+        <div v-if="editable">
+          <input v-model="editBuddy.name" class="min-w-0 w-full" />
+        </div>
         <span v-else>
           {{ buddy.name }}
         </span>
       </div>
       <div class="flex h-8 items-center">
-        <label class="font-semibold w-32 mr-2"> Cloud-Username: </label>
-        {{ buddy.cloudUsername }}
+        <label class="font-semibold w-32 mr-2 flex-none">
+          Cloud-Username:
+        </label>
+        <div v-if="editable" class="sm:w-40">
+          <input v-model="editBuddy.cloudUsername" class="min-w-0 w-full" />
+        </div>
+        <span v-else class="sm:w-40">
+          {{ buddy.cloudUsername }}
+        </span>
       </div>
     </div>
     <div
@@ -22,13 +33,28 @@
       class="flex flex-col sm:flex-row h-full justify-between"
     >
       <button
+        v-if="!editable"
         class="w-8 h-8 py-1 mb-1 sm:mb-0 sm:mr-3"
-        @click="editable = true"
+        @click="startEditing()"
       >
         <font-awesome-icon icon="edit" />
       </button>
-      <button class="w-8 h-8 py-1" @click="showDeleteConfirm = true">
+      <button
+        v-else
+        class="w-8 h-8 py-1 mb-1 sm:mb-0 sm:mr-3"
+        @click="stopEditing()"
+      >
+        <font-awesome-icon icon="times" />
+      </button>
+      <button
+        v-if="!editable"
+        class="w-8 h-8 py-1"
+        @click="showDeleteConfirm = true"
+      >
         <font-awesome-icon icon="trash" />
+      </button>
+      <button v-else class="w-8 h-8 py-1" @click="submit()">
+        <font-awesome-icon icon="save" />
       </button>
     </div>
     <div
@@ -67,10 +93,27 @@ export default class BuddyView extends Vue {
   @Prop({ required: true })
   buddy!: any
 
+  editBuddy: any = null
+
   showDeleteConfirm = false
   editable = false
+  startEditing() {
+    this.editable = true
+    this.editBuddy = Object.assign({}, this.buddy)
+  }
+
+  stopEditing() {
+    this.editable = false
+  }
+
   deleteBuddy() {
     return this.$store.dispatch('deleteBuddy', this.buddy.id)
+  }
+
+  submit() {
+    return this.$store
+      .dispatch('updateBuddy', this.editBuddy)
+      .then(() => (this.editable = false))
   }
 }
 </script>

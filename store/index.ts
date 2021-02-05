@@ -20,9 +20,16 @@ export const mutations = {
   addBuddy(state: IndexState, buddy: any) {
     state.buddies?.push(buddy);
   },
+  updateBuddy(state: IndexState, buddy: any) {
+    let index = state.buddies?.findIndex((b) => b.id === buddy.id);
+    if (index !== undefined && index !== null) {
+      // Can't be null, cause if null index would be null
+      state.buddies!.splice(index, 1, buddy)
+    }
+  },
   removeBuddy(state: IndexState, buddyId: string) {
     let index = state.buddies?.findIndex((b) => b.id === buddyId);
-    if (index) {
+    if (index !== undefined) {
       state.buddies?.splice(index, 1);
     }
   },
@@ -152,4 +159,10 @@ export const actions: any = {
       .$delete(`buddies/${buddyId}`)
       .then(() => commit('removeBuddy', buddyId))
   },
+  async updateBuddy({ commit }: any, buddy: any) {
+    return this
+      .$axios
+      .$put(`buddies/${buddy.id}`, buddy)
+      .then(() => commit('updateBuddy', buddy));
+  }
 }
