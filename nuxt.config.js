@@ -110,6 +110,7 @@ export default {
         'faShare',
         'faCheckCircle',
         'faSpinner',
+        'faFilter',
       ],
       brands: ['faWhatsapp'],
     },
