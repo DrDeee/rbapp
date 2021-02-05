@@ -15,8 +15,11 @@
               class="rounded-b-none rounded-r-none flex-grow"
               placeholder="Suchen..."
             />
-            <button class="rounded-l-none rounded-b-none">
-              <font-awesome-icon icon="filter" @click="toggleFilterMenu()" />
+            <button
+              class="rounded-l-none rounded-b-none"
+              @click="toggleFilterMenu()"
+            >
+              <font-awesome-icon icon="filter" />
             </button>
           </div>
           <div class="relative w-full flex justify-end">
