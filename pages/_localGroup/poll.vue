@@ -48,7 +48,11 @@
                 v-if="poll.hasMobiStuff === false"
                 class="w-full sm:w-auto text-center flex justify-end"
               >
-                <a href="https://fffutu.re/" class="text-blue-500 mr-2">
+                <a
+                  href="https://forms.gle/peK8Mf9EJWx21Yax6"
+                  class="text-blue-500 mr-2"
+                  target="_blank"
+                >
                   Bestell-link
                 </a>
                 <div class="flex">
@@ -95,7 +99,11 @@
                 v-if="poll.hasArmbands === false"
                 class="w-full flex justify-end sm:w-auto"
               >
-                <a href="https://fffutu.re/" class="text-blue-500 mr-2">
+                <a
+                  href="https://fffutu.re/"
+                  class="text-blue-500 mr-2"
+                  target="_blank"
+                >
                   Starterpack bestellen
                 </a>
                 <div class="flex">
@@ -136,6 +144,7 @@
                   :value="false"
                 />
               </td>
+              <!--
               <td
                 v-if="poll.hasEquipment === false"
                 class="flex w-full justify-end sm:w-auto"
@@ -143,6 +152,7 @@
                 <a
                   href="https://docs.google.com/forms/d/e/1FAIpQLSfFkBfhHskJhlkfykarrE2MOyv3lbHXNKgCVCaGpFoqZ6Qrrg/viewform"
                   class="text-blue-500 mr-2"
+                  target="_blank"
                 >
                   Technikbedarfsumfrage
                 </a>
@@ -163,13 +173,16 @@
                   </button>
                 </div>
               </td>
+              -->
             </tr>
           </tbody>
         </table>
         <p class="mt-3">
           Allgemein gibt es noch die Schritt-für-Schritt Anleitung, die das
           Organisieren einer Demo komplett erklärt:
-          <a href="" class="text-blue-500">https://fffutu.re</a>
+          <a href="" class="text-blue-500" target="_blank">
+            https://fffutu.re
+          </a>
         </p>
         <div class="flex flex-wrap mt-5 items-center">
           <h4 class="text-lg self-begin mr-3">
@@ -269,6 +282,7 @@
             <a
               href="https://fffutu.re/MessengerEintragen"
               class="text-blue-600"
+              target="_blank"
             >
               https://fffutu.re/MessengerEintragen
             </a>
@@ -288,7 +302,13 @@
           <p v-if="poll.globalStrike >= 2">
             Die Aktion sollte schonmal in die Schnellregistrierung eingetragen
             werden:
-            <a href="" class="text-blue-500">https://fffutu.re</a>
+            <a
+              href="https://fffutu.re/1903-schnell"
+              class="text-blue-500"
+              target="_blank"
+            >
+              https://fffutu.re/1903-schnell
+            </a>
           </p>
         </div>
       </form>
