@@ -3,14 +3,28 @@ import { Representative } from '@/src/Representative';
 
 interface IndexState {
   localGroups: Array<LocalGroup> | null,
+  buddies: Array<any> | null,
 }
 export const state = (): IndexState => ({
-  localGroups: null
+  localGroups: null,
+  buddies: null,
 })
 
 export const mutations = {
   setGroups(state: IndexState, groups: Array<LocalGroup>) {
     state.localGroups = groups.sort((a, b) => a.name.localeCompare(b.name));
+  },
+  setBuddies(state: IndexState, buddies: Array<any>) {
+    state.buddies = buddies.sort((a, b) => a.name.localeCompare(b.name));
+  },
+  addBuddy(state: IndexState, buddy: any) {
+    state.buddies?.push(buddy);
+  },
+  removeBuddy(state: IndexState, buddyId: string) {
+    let index = state.buddies?.findIndex((b) => b.id === buddyId);
+    if (index) {
+      state.buddies?.splice(index, 1);
+    }
   },
   setBuddy(state: IndexState, { group, buddy }: any) {
     let localGroup = state.localGroups?.find((g) => g.id === group);
@@ -52,6 +66,9 @@ export const mutations = {
       localGroup.poll = poll;
     }
   },
+  newBuddy(state: IndexState, buddy: any) {
+    state.buddies?.push(buddy);
+  }
 } 
 
 export const actions: any = {
@@ -106,6 +123,7 @@ export const actions: any = {
       )
     });
   },
+
   async newLocalGroup({ commit }: any, newLocalGroup: any) {
     const newGroup = await this.$axios.$post('localGroups', newLocalGroup);
     commit('newLocalGroup', new LocalGroup(newGroup));
@@ -115,5 +133,23 @@ export const actions: any = {
       .$axios
       .$put(`localGroups/${group}/poll`, poll)
       .then(() => commit("setPoll", { poll, group }));
+  },
+  async getBuddies({ commit }: any) {
+    return this
+      .$axios
+      .$get('buddies')
+      .then((buddies: any) => commit('setBuddies', buddies))
+  }, 
+  async newBuddy({ commit }: any, buddy: any) {
+    return this
+      .$axios
+      .$post('buddies', buddy)
+      .then((newBuddy: any) => commit('addBuddy', newBuddy))
+  },
+  async deleteBuddy({ commit }: any, buddyId: string) {
+    return this
+      .$axios
+      .$delete(`buddies/${buddyId}`)
+      .then(() => commit('removeBuddy', buddyId))
   },
 }

@@ -7,34 +7,10 @@
         Meine Buddies
       </h1>
     </header>
-    <main class="overflow-scroll p-2 justify-center">
-      <ul class="flex flex-col p-2">
-        <li
-          v-for="buddy of buddies"
-          :key="buddy.id"
-          class="my-2 border border-t-gray-600 w-full flex flex-col sm:flex-row justify-around rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl lg:max-w-5xl mx-auto"
-        >
-          <div
-            class="flex flex-col justify-around w-full my-3 sm:max-w-sm md:max-w-full lg:flex-row lg:justify-start lg:items-center"
-          >
-            <div class="flex justify-between lg:justify-start px-2 lg:w-64">
-              <label class="lg:mr-3 font-semibold"> Name: </label>
-              {{ buddy.name }}
-            </div>
-            <div class="flex justify-between px-2">
-              <label class="lg:mr-3 font-semibold"> Cloud-Username: </label>
-              {{ buddy.cloudUsername }}
-            </div>
-          </div>
-          <div
-            v-if="$isAdmin()"
-            class="flex sm:items-center justify-around w-full mb-3 sm:mb-0 sm:max-w-sm"
-          >
-            <button class="w-32 py-1 sm:my-3">Bearbeiten</button>
-            <button class="w-32 py-1 sm:my-3" @click="buddyToDelete = buddy">
-              Löschen
-            </button>
-          </div>
+    <main class="overflow-scroll p-1 justify-center">
+      <ul class="flex flex-col">
+        <li v-for="buddy of buddies" :key="buddy.id">
+          <Buddy :buddy="buddy" />
         </li>
       </ul>
       <div
@@ -120,25 +96,18 @@ export default class IndexView extends Vue {
   newBuddy = { name: '', cloudUsername: '' }
   buddyToDelete = null
 
-  buddies: Array<{ name: string; cloudUsername: string; id: string }> = []
+  get buddies() {
+    return this.$store.state.buddies
+  }
 
   addBuddy() {
-    return this.$axios.$post('buddies', this.newBuddy).then((newBuddy: any) => {
-      this.buddies.push(newBuddy)
-      this.adding = false
-    })
+    return this.$store
+      .dispatch('newBuddy', this.newBuddy)
+      .then(() => (this.adding = false))
   }
 
   created() {
-    this.$axios.$get('buddies').then((buddies: any) => (this.buddies = buddies))
-  }
-
-  deleteBuddy(buddy: any) {
-    return this.$axios.delete(`buddies/${buddy.id}`).then(() => {
-      const index = this.buddies.findIndex(({ id }) => id === buddy.id)
-      this.buddies.splice(index, 1)
-      this.buddyToDelete = null
-    })
+    this.$store.dispatch('getBuddies')
   }
 }
 </script>

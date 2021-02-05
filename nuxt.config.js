@@ -111,6 +111,7 @@ export default {
         'faCheckCircle',
         'faSpinner',
         'faFilter',
+        'faTrash',
       ],
       brands: ['faWhatsapp'],
     },
