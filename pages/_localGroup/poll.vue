@@ -64,7 +64,7 @@
                   </button>
                   <button
                     v-if="$util.hasShare()"
-                    @lick.prevent="
+                    @click.prevent="
                       $util.share({
                         url: 'https://forms.gle/peK8Mf9EJWx21Yax6',
                         title: 'Plakate & Sticker bestellen',
@@ -115,7 +115,7 @@
                   </button>
                   <button
                     v-if="$util.hasShare()"
-                    @lick.prevent="
+                    @click.prevent="
                       $util.share({
                         url: 'https://fffutu.re/',
                         title: 'Starterpack für deine OG bestellen',
@@ -165,7 +165,7 @@
                   </button>
                   <button
                     v-if="$util.hasShare()"
-                    @lick.prevent="
+                    @click.prevent="
                       $util.share({
                         url: 'https://fffutu.re/',
                         title: 'Technik für deine OG bestellen',
