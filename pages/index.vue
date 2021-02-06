@@ -69,7 +69,9 @@
           class="flex-grow mx-2 mb-2 shadow-2xl overflow-y-scroll"
         >
           <details
-            v-for="state of $util.states()"
+            v-for="state of $util
+              .states()
+              .filter((state) => stateHasGroups(state))"
             :key="state"
             class="state-overview"
             open
@@ -246,6 +248,10 @@ export default class IndexView extends Vue {
   openMenu: null | HTMLElement = null
 
   searchTerm = ''
+
+  stateHasGroups(state: any) {
+    return !!this.localGroups.find((g: any) => g.state === state)
+  }
 
   get localGroups() {
     return this.$store.state.localGroups?.filter((g: LocalGroup) => {
