@@ -13,6 +13,7 @@ export class LocalGroup {
   name: string
   id: string
   buddy: any = null
+  state: string
   poll = {
     reps: null,
     strike: null,
@@ -30,6 +31,7 @@ export class LocalGroup {
     )
     this.name = data.name
     this.id = data.id
+    this.state = data.state
     // data.buddy is sometimes undefined, but we just want null
     this.buddy = data.buddy || null
     if (data.poll) {
