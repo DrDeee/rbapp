@@ -270,19 +270,24 @@ export default class IndexView extends Vue {
     })
   }
 
-  buddies: any = []
+  get buddies() {
+    return this.$store.state.buddies || []
+  }
+
   userAsBuddy: any = null
 
   $axios: any
 
   created() {
     this.$store.dispatch('getGroups')
-    this.$axios.$get('buddies').then((data: any) => {
-      this.buddies = data
-      this.userAsBuddy = this.buddies.find(
-        (buddy: any) => buddy.cloudUsername === this.$auth.user!.username
+    this.$store
+      .dispatch('getBuddies')
+      .then(
+        () =>
+          (this.userAsBuddy = this.buddies.find(
+            (buddy: any) => buddy.cloudUsername === this.$auth.user!.username
+          ))
       )
-    })
   }
 
   isAdmin() {
