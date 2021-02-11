@@ -247,6 +247,12 @@
           <NewRepresentative
             v-if="poll.hasUpToDateReps === false"
             class="mt-5"
+            @newRep="
+              $store.dispatch('newRep', {
+                rep: $event,
+                group: localGroup.id,
+              })
+            "
           />
           <p v-if="poll.hasUpToDateReps === false" class="ml-2">
             Wer sind denn dann die aktuellen Delis? Trage sie entweder hier oder
