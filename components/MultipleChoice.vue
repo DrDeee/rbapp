@@ -9,6 +9,7 @@
           :value="answerValue"
           :name="question"
           :model="value"
+          :checked="value === answerValue"
           @change="$emit('input', $event.target.value)"
         />
       </label>
@@ -29,8 +30,8 @@ export default class MultipleChoice extends Vue {
 
   @Prop({
     default: () => [
-      ['Ja', true],
-      ['Nein', false],
+      ['Ja', 'true'],
+      ['Nein', 'false'],
     ],
   })
   choices!: Array<[String, any]>

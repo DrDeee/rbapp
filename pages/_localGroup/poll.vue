@@ -14,10 +14,6 @@
         <MultipleChoice
           v-model="poll.globalStrike"
           question="Habt ihr vor eine Aktion am globalen Klimastreik (24.9) zu machen? (Details egal)"
-          :choices="[
-            ['Ja', true],
-            ['Nein', false],
-          ]"
         >
           <p v-if="poll.globalStrike === 'true'">
             Dann schnell damit in die
@@ -29,10 +25,6 @@
         <MultipleChoice
           v-model="poll.orderedMobi"
           question="Habt ihr schon Mobimaterial für den 24.09 bestellt?"
-          :choices="[
-            ['Ja', true],
-            ['Nein', false],
-          ]"
         >
           <p v-if="poll.orderedMobi === 'false'">
             Dann mal ab dafür:
@@ -60,10 +52,6 @@
         <MultipleChoice
           v-model="poll.profileGenerator"
           question="Habt ihr schon unseren Profilbildgenerator geteilt?"
-          :choices="[
-            ['Ja', true],
-            ['Nein', false],
-          ]"
         >
           <p v-if="poll.profileGenerator === 'false'">
             Dann teilen, teilen, teilen:
@@ -75,10 +63,6 @@
         <MultipleChoice
           v-model="poll.folder"
           question="Kennt ihr schon unseren Linktree zum globalen Klimastreik?"
-          :choices="[
-            ['Ja', true],
-            ['Nein', false],
-          ]"
         >
           <p v-if="poll.folder === 'false'">
             Dann tobt euch aus:
