@@ -121,7 +121,7 @@
                         </thead>
                         <tbody>
                           <tr class="flex">
-                            <td class="w-32">Großstreik 19.03</td>
+                            <td class="w-32">Großstreik 24.09</td>
                             <td class="text-center w-24">
                               <font-awesome-icon
                                 v-if="isFinishedPoll(localGroup.poll)"
