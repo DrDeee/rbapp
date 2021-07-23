@@ -1,32 +1,26 @@
 <template>
   <div
-    class="my-1 border border-t-gray-600 w-full rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl mx-auto p-1 sm:p-2"
+    class="my-1 border border-t-gray-600 w-full rounded-lg shadow-xl bg-white max-w-sm sm:max-w-xl md:max-w-2xl mx-auto p-1 sm:p-2"
   >
     <div class="flex justify-around w-full">
       <div
         class="flex flex-col sm:flex-row justify-around sm:justify-start sm:items-center w-full mr-2"
       >
         <div class="flex h-8 items-center sm:w-40 sm:mr-2">
-          <label class="font-semibold w-32 sm:w-auto mr-2 flex-none">
-            Name:
-          </label>
+          <label class="font-semibold w-32 sm:w-auto mr-2 flex-none"
+            >Name:</label
+          >
           <div v-if="editable">
             <input v-model="editBuddy.name" class="min-w-0 w-full" />
           </div>
-          <span v-else>
-            {{ buddy.name }}
-          </span>
+          <span v-else>{{ buddy.name }}</span>
         </div>
         <div class="flex h-8 items-center">
-          <label class="font-semibold w-32 mr-2 flex-none">
-            Cloud-Username:
-          </label>
+          <label class="font-semibold mr-2 flex-none">Cloud-Username:</label>
           <div v-if="editable" class="sm:w-40">
             <input v-model="editBuddy.cloudUsername" class="min-w-0 w-full" />
           </div>
-          <span v-else class="sm:w-40">
-            {{ buddy.cloudUsername }}
-          </span>
+          <span v-else class="sm:w-40">{{ buddy.cloudUsername }}</span>
         </div>
       </div>
       <div
@@ -89,18 +83,17 @@
       </div>
     </div>
     <div
-      class="flex flex-col sm:flex-row justify-around sm:justify-start sm:items-center w-full mr-2"
+      class="flex flex-col sm:flex-row justify-around sm:justify-start w-full mt-3 mr-2"
     >
-      <label class="font-semibold w-32 mr-2 flex-none"> OGs: </label>
-      <ul class="flex flex-wrap">
-        <li
-          v-for="localGroup in buddy.localGroups"
-          :key="localGroup"
-          class="mx-3"
-        >
-          {{ localGroup.name }}
-        </li>
-      </ul>
+      <label class="font-semibold mr-2 flex-none">OGs:</label>
+      <p v-if="buddy.localGroups.length > 0">
+        {{
+          buddy.localGroups
+            .map((group) => group.name)
+            .reduce((groups, group) => groups + ', ' + group)
+        }}
+      </p>
+      <p v-else>-</p>
     </div>
   </div>
 </template>
