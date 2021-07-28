@@ -228,10 +228,10 @@
           </p>
         </MultipleChoice>
         <MultipleChoice
-          v-model="poll.playbook"
+          v-model="poll.finances"
           question="Wisst ihr wo ihr Hilfe bekommt wegen Finanzierung eurer Demos?"
         >
-          <p v-if="poll.playbook === 'false'">
+          <p v-if="poll.finances === 'false'">
             Dann findet ihr das hier:
             <a
               href="https://ffftre.es/finanzen_finanzierung_von_materialien_und_aktionen"
@@ -249,7 +249,83 @@
             nach Unterstützung freundlich fragen
           </p>
         </MultipleChoice>
-        <p class="text-center">Danke für eure Arbeit &lt;3</p>
+        <p>
+          Danke für eure Arbeit &lt;3! Um euch alles ein bisschen leichter zu
+          machen könnt ihr hier eine persönliche Infonachricht für eure OG
+          generieren:
+        </p>
+        <p>Hey, hier nochmal die wichtigsten Infos zusammengefasst:</p>
+        <p v-if="poll.globalStrike === 'true'">
+          Bitte tragt eure Aktion schonmal hier ein, dazu sind noch keine
+          konkreten Planungen Nötig: https://fffutu.re/2409-schnell
+        </p>
+        <p v-if="poll.orderedMobi === 'false'">
+          ▶️ Hier könnt ihr Mobimaterial für eure Demo bestellen:
+          https://fffutu.re/mobimaterial
+        </p>
+        <p v-if="poll.orderedEquipment === 'needed'">
+          ▶️ Hier könnt ihr Technik von FFF bekommen:
+          https://fffutu.re/technikbedarf
+          <br />➡️ Außerdem gibt es hier Megaphone, falls ihr welche braucht:
+          https://forms.gle/vcHp1nGGSZiuQE9j9
+        </p>
+        <p v-if="poll.profileGenerator === 'false'">
+          ▶️ Für ein bisschen Werbung könnt ihr noch den Profilbildgenerator in
+          euren Gruppen und auf Social Media teilen:
+          https://fridaysforfuture.de/allefuersklima/profilbildgenerator/
+        </p>
+        <p v-if="poll.stepForStep === 'false'">
+          ▶️ Nutzt den Schritt für Schritt Aktionsleitfaden um bei der Orga
+          nichts zu vergessen: https://fffutu.re/schritt-fuer-schritt
+        </p>
+        <p v-if="poll.playbook === 'false'">
+          ▶️ Tipps zur Organisation eurer Ortsgruppe gibt's im OG Playbook:
+          https://ffftre.es/og-playbook
+        </p>
+        <p v-if="poll.demonstrationRegistration === 'false'">
+          ▶️ Schickt eure neuen Delis bitte an Elena
+          (https://wa.me/4915175003949 ) oder Merle (https://wa.me/491711144013
+          )
+        </p>
+        <p>▶️ Unsere Wichtigsten Tools, die euch bei der Arbeit helfen:</p>
+
+        <ul>
+          <li v-if="poll.toolpic === 'false'">
+            -> Sharpics erstellen: http://toolpic.fridaysforfuture.is/ &amp;
+            http://toolpic.fridaysforfuture.io/
+          </li>
+          <li v-if="poll.cloud === 'false'">
+            -> Unsere Cloud (hier müsst ihr euch erstmal einen Zugang erstellen
+            lassen): https://fffutu.re/cloud_beantragen
+          </li>
+          <li v-if="poll.linktree === 'false'">
+            -> Lintrees: https://admin.ffftre.es/ (funktioniert nur mit Cloud
+            Account)
+          </li>
+          -> Pads (textdokumente die sich gemeinsam bearbeiten lassen):
+          https://pad.fridaysforfuture.de/
+          <li v-if="poll.linkshortener === 'false'">
+            -> Linkverkürzer: https://fffutu.re/
+          </li>
+        </ul>
+        <p v-if="poll.finances">
+          ▶️ Falls ihr Geld für eure Demo braucht, findet ihr alles wichtige
+          dazu hier:
+          https://ffftre.es/finanzen_finanzierung_von_materialien_und_aktionen
+        </p>
+        <p>
+          ▶️ Tragt eure Social Media Kanäle außerdem bitte noch hier ein, damit
+          diese auf unserer Website zu finden sind:
+          https://fffutu.re/MessengerEintragen
+        </p>
+        <p>
+          ▶️ Wenn ihr eine @fridaysforfuture.de Mailadresse haben wollt, meldet
+          euch beim Techsupport: https://wa.me/4915678731731
+        </p>
+        <p>
+          ▶️ Alle wichtigen Links zum Globalen Klimastreik findet ihr nochmal
+          hier: https://ffftre.es/global_strike_24_09
+        </p>
       </form>
     </main>
   </div>
