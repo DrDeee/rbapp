@@ -12,26 +12,57 @@
         @submit.prevent
       >
         <MultipleChoice
-          v-model="poll.globalStrike"
-          question="Habt ihr vor eine Aktion am globalen Klimastreik (24.9) zu machen? (Details egal)"
+          v-model="poll.strategySurveyFilledOut"
+          question="Ihr wollt die Strategie von FFF mitgestalten und habt die Umfrage schon ausgefüllt?"
         >
-          <p v-if="poll.globalStrike === 'true'">
-            Dann schnell damit in die
-            <a href="https://fffutu.re/2409-schnell"
-              >Schnellregistrierung https://fffutu.re/2409-schnell</a
-            >
+          <p v-if="poll.strategySurveyFilledOut === 'false'">
+            Zur
+            <a href="https://www.surveymonkey.de/r/Strategie1"> Umfrage </a>
           </p>
         </MultipleChoice>
         <MultipleChoice
-          v-model="poll.orderedMobi"
-          question="Habt ihr schon Mobimaterial für den 24.09 bestellt?"
+          v-model="poll.participateAndDecide"
+          question="Wollt ihr selbst mitmachen und mitentscheiden, was FFF im nächsten Jahr machen soll?"
         >
-          <p v-if="poll.orderedMobi === 'false'">
-            Dann mal ab dafür:
-            <a href="https://fffutu.re/mobimaterial"
-              >https://fffutu.re/mobimaterial</a
-            >
+          <p v-if="poll.participateAndDecide === 'true'">
+            Dann könnt ihr hier der Strategie-AG beitreten (dafür musst du kein
+            Deli sein!)
+            <a href="https://t.me/+y_IbIn0K4k4yYThi">
+              https://t.me/+y_IbIn0K4k4yYThi
+            </a>
           </p>
+        </MultipleChoice>
+        <MultipleChoice
+          v-model="poll.politicallyActive"
+          question="Ist die OG Kommunalpolitisch aktiv?"
+          :choices="[
+            ['Ja', 'true'],
+            ['Nein', 'false'],
+            ['Was ist das?', 'whatsThat'],
+          ]"
+        >
+          <p v-if="poll.politicallyActive === 'whatsThat'">
+            Hier findet ihr Infos dazu: (dafür musst du kein Deli sein!)
+            <a href="http://fffutu.re/Kommunalpolitik">
+              fffutu.re/Kommunalpolitik
+            </a>
+          </p>
+        </MultipleChoice>
+        <MultipleChoice
+          v-model="poll.helpNeeded"
+          question="Braucht eure OG/Delis mal ein 'How to Bundesebene' von 'mir' (eurem Buddy)?"
+        >
+        </MultipleChoice>
+        <MultipleChoice
+          v-model="poll.status"
+          question="OG Status?"
+          :choices="[
+            ['Aktiv', 'active'],
+            ['Aufbau Hilfe benötigt', 'helpNeeded'],
+            ['Inaktiv', 'inactive'],
+            ['Tot', 'dead'],
+          ]"
+        >
         </MultipleChoice>
         <MultipleChoice
           v-model="poll.orderedEquipment"
@@ -49,69 +80,6 @@
             >
           </p>
         </MultipleChoice>
-        <MultipleChoice
-          v-model="poll.profileGenerator"
-          question="Habt ihr schon unseren Profilbildgenerator geteilt?"
-        >
-          <p v-if="poll.profileGenerator === 'false'">
-            Dann teilen, teilen, teilen:
-            <a href="https://fffutu.re/profilbildfuersklima"
-              >fffutu.re/profilbildfuersklima</a
-            >
-          </p>
-        </MultipleChoice>
-        <MultipleChoice
-          v-model="poll.folder"
-          question="Kennt ihr schon unseren Linktree zum globalen Klimastreik?"
-        >
-          <p v-if="poll.folder === 'false'">
-            Dann tobt euch aus:
-            <a href="https://ffftre.es/global_strike_24_09"
-              >ffftre.es/global_strike_24_09</a
-            >
-          </p>
-        </MultipleChoice>
-        <h4>
-          Bei welchem Workshop vor der Bundestagswahl hättet ihr Interesse
-          teilzunehmen?
-        </h4>
-        <MultipleChoice
-          v-model="poll.strategy"
-          question="Politische Strategie für Aktivistis"
-        />
-        <MultipleChoice
-          v-model="poll.strategy"
-          question="Teamorga für Aktivistis"
-        />
-        <MultipleChoice
-          v-model="poll.pressBeginner"
-          question="Presse für Anfänger:innen"
-        />
-        <MultipleChoice
-          v-model="poll.pressAdvanced"
-          question="Presse für Fortgeschrittene"
-        />
-        <MultipleChoice
-          v-model="poll.howToFFF"
-          question="How to FFF - Grundlagen für neue und junge Ortsgruppen"
-        />
-        <MultipleChoice
-          v-model="poll.skillShare"
-          question="Skillsharing Ausbildung"
-        />
-        <MultipleChoice
-          v-model="poll.socialMediaWS"
-          question="Social-Media Workshops"
-        />
-        <MultipleChoice
-          v-model="poll.politicalTalks"
-          question="Politiker:innen Gespräche"
-        />
-        <label>
-          An welchen Tagen und zu welchen Uhrzeiten habt ihr tendenziell am
-          ehesten Zeit und Lust auf einen Workshop?
-          <textarea class="w-full"></textarea>
-        </label>
         <MultipleChoice
           v-model="poll.stepForStep"
           question="Kennt ihr unseren Schritt-für-Schritt Aktionsplanungsleitfaden?"
@@ -227,52 +195,12 @@
             <a href="https://fffutu.re">fffutu.re</a>
           </p>
         </MultipleChoice>
-        <MultipleChoice
-          v-model="poll.finances"
-          question="Wisst ihr wo ihr Hilfe bekommt wegen Finanzierung eurer Demos?"
-        >
-          <p v-if="poll.finances === 'false'">
-            Dann findet ihr das hier:
-            <a
-              href="https://ffftre.es/finanzen_finanzierung_von_materialien_und_aktionen"
-              >ffftre.es/finanzen_finanzierung_von_materialien_und_aktionen</a
-            >
-          </p>
-        </MultipleChoice>
-        <MultipleChoice
-          v-model="poll.spenden"
-          question="Sammelt ihr schon Spenden auf euren Demos?"
-        >
-          <p v-if="poll.spenden === 'false'">
-            Dann fangt mal an :) Die Finanz AG gibt dazu bald auch einen
-            Leitfaden raus, an sich aber einfach einmal die Leute anhauen und
-            nach Unterstützung freundlich fragen
-          </p>
-        </MultipleChoice>
-        <p>
-          Danke für eure Arbeit &lt;3! Um euch alles ein bisschen leichter zu
-          machen könnt ihr hier eine persönliche Infonachricht für eure OG
-          generieren:
-        </p>
         <p>Hey, hier nochmal die wichtigsten Infos zusammengefasst:</p>
-        <p v-if="poll.globalStrike === 'true'">
-          Bitte tragt eure Aktion schonmal hier ein, dazu sind noch keine
-          konkreten Planungen Nötig: https://fffutu.re/2409-schnell
-        </p>
-        <p v-if="poll.orderedMobi === 'false'">
-          ▶️ Hier könnt ihr Mobimaterial für eure Demo bestellen:
-          https://fffutu.re/mobimaterial
-        </p>
         <p v-if="poll.orderedEquipment === 'needed'">
           ▶️ Hier könnt ihr Technik von FFF bekommen:
           https://fffutu.re/technikbedarf
           <br />➡️ Außerdem gibt es hier Megaphone, falls ihr welche braucht:
           https://forms.gle/vcHp1nGGSZiuQE9j9
-        </p>
-        <p v-if="poll.profileGenerator === 'false'">
-          ▶️ Für ein bisschen Werbung könnt ihr noch den Profilbildgenerator in
-          euren Gruppen und auf Social Media teilen:
-          https://fridaysforfuture.de/allefuersklima/profilbildgenerator/
         </p>
         <p v-if="poll.stepForStep === 'false'">
           ▶️ Nutzt den Schritt für Schritt Aktionsleitfaden um bei der Orga
@@ -308,11 +236,6 @@
             -> Linkverkürzer: https://fffutu.re/
           </li>
         </ul>
-        <p v-if="poll.finances">
-          ▶️ Falls ihr Geld für eure Demo braucht, findet ihr alles wichtige
-          dazu hier:
-          https://ffftre.es/finanzen_finanzierung_von_materialien_und_aktionen
-        </p>
         <p>
           ▶️ Tragt eure Social Media Kanäle außerdem bitte noch hier ein, damit
           diese auf unserer Website zu finden sind:
@@ -356,7 +279,7 @@ export default class PollView extends Vue {
     if (oldValue !== null) {
       this.$store.dispatch('submitPoll', {
         group: this.localGroup.id,
-        poll,
+        poll: Object.assign({}, poll),
       })
     }
   }
