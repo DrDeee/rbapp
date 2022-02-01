@@ -75,9 +75,7 @@
         >
           <p v-if="poll.orderedEquipment === 'needed'">
             Dann bestellt hier:
-            <a href="https://fffutu.re/technikbedarf"
-              >fffutu.re/technikbedarf</a
-            >
+            <a href="https://fffutu.re/technik2503">fffutu.re/technikbedarf</a>
           </p>
         </MultipleChoice>
         <MultipleChoice
