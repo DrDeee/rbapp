@@ -4,7 +4,7 @@
     class="m-3 text-xl inline-block"
     @click="menuClosed = false"
   >
-    Neuer Deli
+    Neue:r Deli
   </button>
   <form
     v-else

@@ -121,7 +121,7 @@
                         </thead>
                         <tbody>
                           <tr class="flex">
-                            <td class="w-32">Großstreik 24.09</td>
+                            <td class="w-32">Februar 2022 &amp; 25.03.</td>
                             <td class="text-center w-24">
                               <font-awesome-icon
                                 v-if="isFinishedPoll(localGroup.poll)"
@@ -326,7 +326,7 @@ export default class IndexView extends Vue {
   filterSetting: 'all' | 'mine' | 'withoutBuddy' = 'all'
 }
 </script>
-<style>
+<style lang="postcss">
 .deli + .deli::before {
   @apply block rounded-full w-11/12 m-auto h-1 bg-secondary;
   content: '';
