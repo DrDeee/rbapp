@@ -5,9 +5,6 @@
         Umfrage – {{ localGroup && localGroup.name }}
       </h1>
     </header>
-    <header class="border-b-2 border-primary h-auto">
-      <h1 class="text-sm text-center mt-1 w-full" v-html="cnt"></h1>
-    </header>
     <main class="overflow-y-scroll">
       <form
         v-if="localGroup && poll"
@@ -329,12 +326,6 @@ import { clipboard } from 'vue-clipboards'
   },
 })
 export default class PollView extends Vue {
-  get cnt() {
-    let ret = ''
-    Object.keys(this.poll).forEach((k) => (ret += "'" + k + "': String,<br />"))
-    return ret
-  }
-
   get localGroup() {
     return (
       this.$store.state.localGroups?.find(
