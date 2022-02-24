@@ -96,20 +96,6 @@
             </p>
           </MultipleChoice>
           <MultipleChoice
-            v-model="poll.knowAboutLocalNewsletter"
-            question="...der Möglichkeit einen lokalen Newsletter (nach PLZ) zu versenden?"
-            :choices="[
-              ['Ja', 'yes'],
-              ['Nein, aber würden wir gern', 'interested'],
-              ['Ist nichts für uns', 'notInterested'],
-            ]"
-          >
-            <p v-if="poll.knowAboutLocalNewsletter === 'interested'">
-              Dann meldet euch doch bei
-              <a href="https://fffutu.re/sharepix">fffutu.re/sharepix</a>
-            </p>
-          </MultipleChoice>
-          <MultipleChoice
             v-model="poll.knowAboutRHAG"
             question="...der Rechtshilfe-AG, an die ihr euch bei rechtlichen Problemen wenden könnt?
 (z.B. bei Problemen mit der Polizei auf Demos etc.)"
@@ -182,7 +168,7 @@
             <p v-if="poll.kneedsFRWorkshop === 'true'">
               Dann seit am <b>2.03.2022</b> um <b>19 Uhr</b> dabei:
               <a href="https://fffutu.re/fundraising-tk"
-                >ffutu.re/fundraising-tk</a
+                >fffutu.re/fundraising-tk</a
               >
             </p>
           </MultipleChoice>
@@ -201,107 +187,6 @@
             >.
           </p>
         </MultipleChoice>
-        <!--         <MultipleChoice
-          v-model="poll.hasUpToDateReps"
-          question="Sind das hier die aktuellen Delis?"
-        >
-          <template v-if="localGroup.representatives.length === 0" #before>
-            <div class="mb-3">
-              <div class="text-center">Keine Delis eingespeichert</div>
-              <ul class="w-full flex flex-col justify-center items-center">
-                <li
-                  v-for="representative in localGroup.representatives"
-                  :key="representative.id"
-                >
-                  {{ representative.name }}, {{ representative.formattedPhone }}
-                </li>
-              </ul>
-            </div>
-          </template>
-          <div class="flex justify-center">
-            <NewRepresentative
-              v-if="poll.hasUpToDateReps === 'false'"
-              class="mt-5"
-              @newRep="
-                $store.dispatch('newRep', {
-                  rep: $event,
-                  group: localGroup.id,
-                })
-              "
-            />
-          </div>
-          <p v-if="poll.hasUpToDateReps === 'false'" class="ml-2 text-sm">
-            Wer sind denn dann die aktuellen Delis? Trage sie entweder hier oder
-            später ein und
-            <em> melde sie bei eine:r Regio-AG-Sprecher:in</em>, damit der:die
-            Deli den bundesweiten Infogruppen hinzugefügt werden kann. >
-          </p>
-        </MultipleChoice>
-        <fieldset class="p-2  infos">
-          <div class="mb-3 text-lg">
-            Hey, hier nochmal die wichtigsten Infos zusammengefasst:
-          </div>
-          <p v-if="poll.orderedEquipment === 'needed'">
-            Hier könnt ihr Technik von FFF bekommen:
-            https://fffutu.re/technikbedarf
-            <br />➡️ Außerdem gibt es hier Megaphone, falls ihr welche braucht:
-            https://forms.gle/vcHp1nGGSZiuQE9j9
-          </p>
-          <p v-if="poll.stepForStep === 'false'">
-            Nutzt den Schritt für Schritt Aktionsleitfaden um bei der Orga
-            nichts zu vergessen: https://fffutu.re/schritt-fuer-schritt
-          </p>
-          <p v-if="poll.playbook === 'false'">
-            Tipps zur Organisation eurer Ortsgruppe gibt's im OG Playbook:
-            https://ffftre.es/og-playbook
-          </p>
-          <p v-if="poll.demonstrationRegistration === 'false'">
-            Schickt eure neuen Delis bitte an Elena (https://wa.me/4915175003949
-            ) oder Merle (https://wa.me/491711144013 )
-          </p>
-          <p>Unsere Wichtigsten Tools, die euch bei der Arbeit helfen:</p>
-
-          <ul class="tools">
-            <li v-if="poll.toolpic === 'false'">
-              Sharpics erstellen: http://toolpic.fridaysforfuture.is/ &amp;
-              http://toolpic.fridaysforfuture.io/
-            </li>
-            <li v-if="poll.cloud === 'false'">
-              Unsere Cloud (hier müsst ihr euch erstmal einen Zugang erstellen
-              lassen): https://fffutu.re/cloud_beantragen
-            </li>
-            <li v-if="poll.linktree === 'false'">
-              Lintrees: https://admin.ffftre.es/ (funktioniert nur mit Cloud
-              Account)
-            </li>
-            <li>
-              Pads (textdokumente die sich gemeinsam bearbeiten lassen):
-              https://pad.fridaysforfuture.de/
-            </li>
-            <li v-if="poll.linkshortener === 'false'">
-              Linkverkürzer: https://fffutu.re/
-            </li>
-          </ul>
-          <p>
-            Tragt eure Social Media Kanäle außerdem bitte noch hier ein, damit
-            diese auf unserer Website zu finden sind:
-            https://fffutu.re/MessengerEintragen
-          </p>
-          <p>
-            Wenn ihr eine @fridaysforfuture.de Mailadresse haben wollt, meldet
-            euch beim Techsupport:
-            <a href="https://wa.me/4915678731731" target="_blank"
-              >https://wa.me/4915678731731</a
-            >
-          </p>
-          <p>
-            Alle wichtigen Links zum Globalen Klimastreik findet ihr nochmal
-            hier:
-            <a href="https://ffftre.es/global_strike_24_09" target="_blank"
-              >https://ffftre.es/global_strike_24_09</a
-            >
-          </p>
-        </fieldset> -->
         <div
           class="flex justify-between mt-3 p-2 bg-secondary rounded-md text-white"
         >
