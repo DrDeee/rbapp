@@ -150,18 +150,24 @@ export default {
         scheme: 'oauth2',
         endpoints: {
           authorization:
-            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/auth',
+            (process.env.KC_REALM ||
+              ' https://auth.fffutu.re/auth/realms/FridaysForFuture') +
+            '/protocol/openid-connect/auth',
           token:
-            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/token',
+            (process.env.KC_REALM ||
+              ' https://auth.fffutu.re/auth/realms/FridaysForFuture') +
+            '/protocol/openid-connect/token',
           userInfo:
-            'https://auth.fffutu.re/auth/realms/FridaysForFuture/protocol/openid-connect/userinfo',
+            (process.env.KC_REALM ||
+              ' https://auth.fffutu.re/auth/realms/FridaysForFuture') +
+            '/protocol/openid-connect/userinfo',
         },
         token: {
           maxAge: 600,
         },
         responseType: 'code',
         grantType: 'authorization_code',
-        clientId: 'regio',
+        clientId: process.env.OIDC_CLIENT || 'regio',
         scope: [],
         codeChallengeMethod: 'plain',
       },
@@ -171,7 +177,7 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'https://api.regiobuddy.app/',
+    baseURL: process.env.API_URL || 'https://api.regiobuddy.app/',
     https: true,
   },
 
